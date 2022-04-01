@@ -40,16 +40,6 @@ class CodingGameTest {
     }
 
     @Test
-    void bugBadEvaluationBlack(){
-        Game game = new Game();
-        String fen = "nbr1nkb1/2pp1pp1/pp5p/1q6/8/1PPBPP2/P4BPP/N1RQNK1R";
-        String color = "b";
-
-        game.play(fen,color,null);
-
-    }
-
-    @Test
     void bugE4(){
         Game game = new Game();
         String fen = "rkrbq1bn/ppp1pppp/3p2n1/8/P7/6P1/1PPPPP1P/RKRBQNBN";

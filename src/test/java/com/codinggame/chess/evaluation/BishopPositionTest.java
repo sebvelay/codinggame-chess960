@@ -1,6 +1,7 @@
 package com.codinggame.chess.evaluation;
 
 import com.codinggame.chess.Chrono;
+import com.codinggame.chess.Constant;
 import com.codinggame.chess.board.Board;
 import com.codinggame.chess.board.Move;
 import com.codinggame.chess.board.pieces.Color;
@@ -27,9 +28,7 @@ public class BishopPositionTest {
     @Test
     void shouldLiberateBishop() {
         board = new Board("8/8/8/8/5N2/8/PPPPPPPP/6B1");
-        List<Move> moves = board.getMoves(Color.white);
-        Evaluation evaluation = new Evaluation(board, moves, Color.white, Color.white, false);
-        evaluation.deeper(3, Color.white);
+        Evaluation evaluation = new Evaluation(board, Color.white, Color.white, Constant.DEEPER);
 
         Node best = evaluation.getBest();
 

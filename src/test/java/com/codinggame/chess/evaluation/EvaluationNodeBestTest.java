@@ -1,6 +1,7 @@
 package com.codinggame.chess.evaluation;
 
 import com.codinggame.chess.Chrono;
+import com.codinggame.chess.Constant;
 import com.codinggame.chess.board.Board;
 import com.codinggame.chess.board.Move;
 import com.codinggame.chess.board.pieces.Color;
@@ -25,26 +26,18 @@ class EvaluationNodeBestTest {
     @Test
     void shouldEvaluateNodes() {
         board = new Board("8/8/6b1/8/8/8/3P4/8");
-        List<Move> moves = board.getPieces(Color.white)
-                .stream()
-                .flatMap(p -> p.legalsMove(board).stream())
-                .collect(Collectors.toList());
 
-        Evaluation evaluation = new Evaluation(board, moves, Color.white,Color.white,false);
+        Evaluation evaluation = new Evaluation(board, Color.white,Color.white, Constant.DEEPER);
 
         Assertions.assertEquals(2, evaluation.nodes.size());
     }
 
     @Test
     void shouldEvaluateBest(){
+        Constant.DEBUG_EVAL=true;
         board = new Board("8/8/6b1/8/8/8/3P4/8");
-        List<Move> moves = board.getPieces(Color.white)
-                .stream()
-                .flatMap(p -> p.legalsMove(board).stream())
-                .collect(Collectors.toList());
 
-        Evaluation evaluation = new Evaluation(board, moves, Color.white,Color.white,false);
-        evaluation.deeper(2,Color.white);
+        Evaluation evaluation = new Evaluation(board, Color.white,Color.white, Constant.DEEPER);
 
         Node best = evaluation.getBest();
 
@@ -55,13 +48,9 @@ class EvaluationNodeBestTest {
     void shouldEvaluateBestTakeQueen() {
 
         board = new Board("qrnkrbbn/pPppp3/8/6p1/6P1/5p1p/1PPPPP1P/QRK1RBBN");
-        List<Move> moves = board.getPieces(Color.white)
-                .stream()
-                .flatMap(p -> p.legalsMove(board).stream())
-                .collect(Collectors.toList());
 
-        Evaluation evaluation = new Evaluation(board, moves, Color.white, Color.white, false);
-        evaluation.deeper(1, Color.white);
+
+        Evaluation evaluation = new Evaluation(board, Color.white, Color.white, Constant.DEEPER);
 
         Node best = evaluation.getBest();
 

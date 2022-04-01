@@ -29,15 +29,18 @@ public class Board {
 
     public String fen;
 
+    public Integer score = null;
+
     private Board() {
 
     }
 
     /**
      * clone but don't put in cache
+     *
      * @param board
      */
-    public Board(Board board){
+    public Board(Board board) {
         this.applyFen(board.fen);
     }
 
@@ -253,9 +256,10 @@ public class Board {
     }
 
     public int getScore() {
-        /*if (this.score != 0) {
-            return this.score;
-        }*/
+        if (score != null) {
+            return score;
+        }
+
         int scoreWhite = MaterialScore.evaluate(this, Color.white);
         int scoreBlack = MaterialScore.evaluate(this, Color.black);
         scoreWhite += PositionScore.evaluate(this, Color.white);
@@ -264,7 +268,7 @@ public class Board {
 
 
         score = scoreWhite - scoreBlack;
-        //this.score = score;
+        this.score = score;
         return score;
     }
 }
