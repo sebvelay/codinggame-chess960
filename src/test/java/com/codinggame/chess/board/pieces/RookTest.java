@@ -16,8 +16,7 @@ public class RookTest {
     @Test
     void shouldMove(){
 
-        Board board = new Board();
-        board.applyFen("8/pR3B2/8/8/1n6/8/8/8");
+        Board board = new Board("8/pR3B2/8/8/1n6/8/8/8");
 
         Piece rook = board.getPiece(new Square("b7"));
 
@@ -35,8 +34,7 @@ public class RookTest {
 
     @Test
     void shouldMove2(){
-        Board board = new Board();
-        board.applyFen("8/8/8/8/2R5/8/8/8");
+        Board board = new Board("8/8/8/8/2R5/8/8/8");
 
         Piece rook = board.getPiece(new Square("c4"));
 

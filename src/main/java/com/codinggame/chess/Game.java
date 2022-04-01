@@ -30,11 +30,11 @@ public class Game extends Chrono {
 
 
     public void play(String fen, String color, List<String> legalMovesFromGame) {
-        Board board = new Board();
+        Board board = null;
         if (Cache.cachedBoard.containsKey(fen)) {
             board = Cache.cachedBoard.get(fen);
         } else {
-            board.applyFen(fen);
+            board = new Board(fen);
         }
 
         Color myColor = color.equals("w") ? Color.white : Color.black;

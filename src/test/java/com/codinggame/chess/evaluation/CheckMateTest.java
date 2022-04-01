@@ -36,8 +36,7 @@ class CheckMateTest {
 
     @Test
     void checkMate(){
-        Board board = new Board();
-        board.applyFen("k3P3/2R1P3/2PRP3/3P4/8/8/8/8");
+        Board board = new Board("k3P3/2R1P3/2PRP3/3P4/8/8/8/8");
 
         List<Move> collect = board.getMoves(Color.white);
 
@@ -50,8 +49,7 @@ class CheckMateTest {
 
     @Test
     void notACheckMate(){
-        Board board = new Board();
-        board.applyFen("n1rkr1bn/pp1ppp1p/2p3p1/8/3q4/6P1/PPPPQ1PP/1BKRR1B1");
+        Board board = new Board("n1rkr1bn/pp1ppp1p/2p3p1/8/3q4/6P1/PPPPQ1PP/1BKRR1B1");
 
         List<Move> collect = board.getPieces(Color.black)
                 .stream()

@@ -14,8 +14,7 @@ class KnightTest {
 
     @Test
     void shouldMove() {
-        Board board = new Board();
-        board.applyFen("8/8/8/8/3N4/8/8/8");
+        Board board = new Board("8/8/8/8/3N4/8/8/8");
 
         Piece piece = board.getPiece(new Square("d4"));
 

@@ -15,8 +15,7 @@ class KingTest {
 
     @Test
     void shouldMove(){
-        Board board=new Board();
-        board.applyFen("8/8/1n6/K7/N7/8/8/8");
+        Board board=new Board("8/8/1n6/K7/N7/8/8/8");
 
         Piece king = board.getPiece(new Square("a5"));
 

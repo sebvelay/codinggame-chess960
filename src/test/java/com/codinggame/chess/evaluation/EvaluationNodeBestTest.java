@@ -18,14 +18,13 @@ class EvaluationNodeBestTest {
 
     @BeforeEach
     void setUp() {
-        board = new Board();
         Chrono.start=System.currentTimeMillis()+1000000;
 
     }
 
     @Test
     void shouldEvaluateNodes() {
-        board.applyFen("8/8/6b1/8/8/8/3P4/8");
+        board = new Board("8/8/6b1/8/8/8/3P4/8");
         List<Move> moves = board.getPieces(Color.white)
                 .stream()
                 .flatMap(p -> p.legalsMove(board).stream())
@@ -38,7 +37,7 @@ class EvaluationNodeBestTest {
 
     @Test
     void shouldEvaluateBest(){
-        board.applyFen("8/8/6b1/8/8/8/3P4/8");
+        board = new Board("8/8/6b1/8/8/8/3P4/8");
         List<Move> moves = board.getPieces(Color.white)
                 .stream()
                 .flatMap(p -> p.legalsMove(board).stream())
@@ -53,15 +52,16 @@ class EvaluationNodeBestTest {
     }
 
     @Test
-    void shouldEvaluateBestTakeQueen(){
-        board.applyFen("qrnkrbbn/pPppp3/8/6p1/6P1/5p1p/1PPPPP1P/QRK1RBBN");
+    void shouldEvaluateBestTakeQueen() {
+
+        board = new Board("qrnkrbbn/pPppp3/8/6p1/6P1/5p1p/1PPPPP1P/QRK1RBBN");
         List<Move> moves = board.getPieces(Color.white)
                 .stream()
                 .flatMap(p -> p.legalsMove(board).stream())
                 .collect(Collectors.toList());
 
-        Evaluation evaluation = new Evaluation(board, moves, Color.white,Color.white,false);
-        evaluation.deeper(1,Color.white);
+        Evaluation evaluation = new Evaluation(board, moves, Color.white, Color.white, false);
+        evaluation.deeper(1, Color.white);
 
         Node best = evaluation.getBest();
 

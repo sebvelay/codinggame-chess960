@@ -25,11 +25,11 @@ public class Evaluation extends Chrono {
             }
 
             //je simule le nouveau board
-            Board newBoard = board.clone();
+            Board newBoard = null;
             if (m.isTakePiece) {
-                newBoard.takePiece(m);
+                newBoard = board.takePiece(m);
             } else {
-                newBoard.move(m);
+                newBoard = board.move(m);
             }
             //je l'évalue
 
@@ -59,11 +59,11 @@ public class Evaluation extends Chrono {
                     boolean checkMate = true;
                     for (Move mo : movesOppenent) {
                         //je simule le nouveau board
-                        Board newBoardOppent = newBoard.clone();
+                        Board newBoardOppent = null;
                         if (mo.isTakePiece) {
-                            newBoardOppent.takePiece(mo);
+                            newBoardOppent = board.takePiece(mo);
                         } else {
-                            newBoardOppent.move(mo);
+                            newBoardOppent = board.move(mo);
                         }
                         //si on trouve un move pas check on est pas checkmate
                         if (!newBoardOppent.isCheck(opponent)) {
@@ -127,6 +127,7 @@ public class Evaluation extends Chrono {
             }
 
             List<Move> moves = boardInPosition.getMoves(colorToEvaluate);
+
             //List<Piece> pieces = boardInPosition.getPieces(colorToEvaluate);
             /*for (Piece p : pieces) {
                 moves.addAll(p.legalsMove(boardInPosition));

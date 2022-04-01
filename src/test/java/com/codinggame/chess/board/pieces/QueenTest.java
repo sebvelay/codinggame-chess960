@@ -17,8 +17,7 @@ class QueenTest {
     @Test
     void queenMoves() {
 
-        Board board = new Board();
-        board.applyFen("8/8/P3b3/4r3/2Q5/8/8/2N2p2");
+        Board board = new Board("8/8/P3b3/4r3/2Q5/8/8/2N2p2");
 
         Piece queen = board.getPiece(new Square("c4"));
 

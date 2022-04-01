@@ -18,7 +18,6 @@ class TakeCenterTest {
 
     @BeforeEach
     void setUp() {
-        board = new Board();
         Chrono.start = System.currentTimeMillis() + 10000;
 
     }
@@ -27,7 +26,7 @@ class TakeCenterTest {
     class White {
         @Test
         void shouldPreferTakeCenter() {
-            board.applyFen("8/8/8/4P3/8/8/PPPP1PPP/8");
+            board = new Board("8/8/8/4P3/8/8/PPPP1PPP/8");
             List<Move> moves = board.getMoves(Color.white);
             Evaluation evaluation = new Evaluation(board, moves, Color.white, Color.white, false);
             evaluation.deeper(3, Color.white);
@@ -39,7 +38,7 @@ class TakeCenterTest {
 
         @Test
         void shouldPreferTakeCenter2() {
-            board.applyFen("8/8/8/8/8/8/PPP1PPPP/8");
+            board = new Board("8/8/8/8/8/8/PPP1PPPP/8");
             List<Move> moves = board.getMoves(Color.white);
             Evaluation evaluation = new Evaluation(board, moves, Color.white, Color.white, false);
             evaluation.deeper(3, Color.white);
@@ -54,7 +53,7 @@ class TakeCenterTest {
     class Black {
         @Test
         void shouldPreferTakeCenter() {
-            board.applyFen("8/pppp1ppp/8/8/8/8/8/8");
+            board = new Board("8/pppp1ppp/8/8/8/8/8/8");
             List<Move> moves = board.getMoves(Color.black);
             Evaluation evaluation = new Evaluation(board, moves, Color.black, Color.black, false);
             evaluation.deeper(1, Color.black);
@@ -66,7 +65,7 @@ class TakeCenterTest {
 
         @Test
         void shouldPreferTakeCenter2() {
-            board.applyFen("8/ppp1pppp/8/8/8/8/8/8");
+            board = new Board("8/ppp1pppp/8/8/8/8/8/8");
             List<Move> moves = board.getMoves(Color.black);
             Evaluation evaluation = new Evaluation(board, moves, Color.black, Color.black, false);
             evaluation.deeper(1, Color.black);

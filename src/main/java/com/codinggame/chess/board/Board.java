@@ -13,9 +13,11 @@ import com.codinggame.chess.board.pieces.Queen;
 import com.codinggame.chess.board.pieces.Rook;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class Board {
 
@@ -24,38 +26,40 @@ public class Board {
 
     public Map<Color, List<Move>> cachedMoves = new HashMap<>();
     public Map<Color, List<Piece>> cachedPieces = new HashMap<>();
-    //public int score = 0;
-
 
     public String fen;
+
+    private Board() {
+
+    }
+
+    /**
+     * clone but don't put in cache
+     * @param board
+     */
+    public Board(Board board){
+        this.applyFen(board.fen);
+    }
+
+    public Board(final String fen) {
+        this.applyFen(fen);
+        Cache.cachedBoard.put(fen, this);
+    }
 
     public Square getSquare(int row, int col) {
         return Cache.squares[row][col];
     }
 
-    public Board clone() {
-        Board b = new Board();
-
-        b.pieces = new ArrayList<>();
-        for (Piece p : this.pieces) {
-            b.pieces.add(p.clonePiece());
-        }
-        b.fen = getFen();
-
-        if (Cache.cachedBoard.containsKey(b.fen)) {
-            //System.err.println("clone return cached");
-            return Cache.cachedBoard.get(b.fen);
-        }
-
-        return b;
-    }
-
-    public void takePiece(Move m) {
+    /**
+     * Generate a new board and put on cache after move
+     */
+    public Board takePiece(Move m) {
+        Board newBoard = new Board(this);
         Piece promoted = null;
         Piece toRemove = null;
 
-        pieces.removeIf(p -> m.target.equals(p.square));
-        for (Piece p : pieces) {
+        newBoard.pieces.removeIf(p -> m.target.equals(p.square));
+        for (Piece p : newBoard.pieces) {
             if (p.square.equals(m.piece.square)) {
                 p.square = m.target;
                 if (m.move.endsWith("q")) {
@@ -67,17 +71,22 @@ public class Board {
         }
 
         if (toRemove != null && promoted != null) {
-            pieces.remove(toRemove);
-            pieces.add(promoted);
+            newBoard.pieces.remove(toRemove);
+            newBoard.pieces.add(promoted);
         }
 
-        recalculateFenAndPutOnCache();
+        newBoard.recalculateFenAndPutOnCache();
+        return newBoard;
     }
 
-    public void move(final Move m) {
+    /**
+     * Generate a new board and put on cache after move
+     */
+    public Board move(final Move m) {
+        Board newBoard = new Board(this);
         Piece promoted = null;
         Piece toRemove = null;
-        for (Piece p : pieces) {
+        for (Piece p : newBoard.pieces) {
             if (p.square.equals(m.piece.square)) {
                 p.square = m.target;
                 if (m.move.endsWith("q")) {
@@ -87,12 +96,12 @@ public class Board {
             }
         }
         if (toRemove != null && promoted != null) {
-            pieces.remove(toRemove);
-            pieces.add(promoted);
+            newBoard.pieces.remove(toRemove);
+            newBoard.pieces.add(promoted);
         }
 
-        recalculateFenAndPutOnCache();
-
+        newBoard.recalculateFenAndPutOnCache();
+        return newBoard;
 
     }
 
@@ -164,10 +173,10 @@ public class Board {
             //System.err.println("used cached moves");
             return cachedMoves.get(color);
         }
-        List<Move> moves = new ArrayList<>();
-        for (Piece p : this.getPieces(color)) {
-            moves.addAll(p.legalsMove(this));
-        }
+        List<Move> moves = this.getPieces(color).parallelStream()
+                .map(p -> p.legalsMove(this))
+                .flatMap(Collection::parallelStream)
+                .collect(Collectors.toList());
         cachedMoves.put(color, moves);
         return moves;
     }

@@ -14,8 +14,7 @@ public class PawnTest {
     @Test
     void shouldHave3Moves(){
 
-        Board board = new Board();
-        board.applyFen("2r1n3/3P4/8/8/8/8/8/8");
+        Board board = new Board("2r1n3/3P4/8/8/8/8/8/8");
 
         List<String> collect = board.getPieces(Color.white)
                 .stream()

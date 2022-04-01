@@ -23,8 +23,7 @@ class FenTest {
         @BeforeEach
         void setUp(){
             String fen = "rkrbbnqn/pppppppp/8/8/8/8/PPPPPPPP/RKRBBNQN";
-            board = new Board();
-            board.applyFen(fen);
+            board = new Board(fen);
         }
 
 
@@ -130,8 +129,7 @@ class FenTest {
 
         @Test
         void shouldCreate32PiecesAtStart(){
-            Board board = new Board();
-            board.applyFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR");
+            Board board = new Board("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR");
 
             Assertions.assertEquals(32,board.pieces.size());
         }

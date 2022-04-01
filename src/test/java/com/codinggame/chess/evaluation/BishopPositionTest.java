@@ -19,14 +19,14 @@ public class BishopPositionTest {
 
     @BeforeEach
     void setUp() {
-        board = new Board();
+
         Chrono.start = System.currentTimeMillis() + 10000;
 
     }
 
     @Test
     void shouldLiberateBishop() {
-        board.applyFen("8/8/8/8/5N2/8/PPPPPPPP/6B1");
+        board = new Board("8/8/8/8/5N2/8/PPPPPPPP/6B1");
         List<Move> moves = board.getMoves(Color.white);
         Evaluation evaluation = new Evaluation(board, moves, Color.white, Color.white, false);
         evaluation.deeper(3, Color.white);
