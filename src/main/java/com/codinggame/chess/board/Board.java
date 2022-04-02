@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public class Board {
 
@@ -168,10 +167,11 @@ public class Board {
             //System.err.println("used cached moves");
             return cachedMoves.get(color);
         }
-        List<Move> moves = this.getPieces(color).parallelStream()
-                .map(p -> p.legalsMove(this))
-                .flatMap(n -> n.parallelStream())
-                .collect(Collectors.toList());
+        List<Move> moves = new ArrayList<>();
+        for (Piece p : this.getPieces(color)) {
+            List<Move> legalsMove = p.legalsMove(this);
+            moves.addAll(legalsMove);
+        }
         cachedMoves.put(color, moves);
         return moves;
     }

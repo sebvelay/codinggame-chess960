@@ -2,13 +2,12 @@ package com.codinggame.chess.evaluation;
 
 import com.codinggame.chess.Chrono;
 import com.codinggame.chess.Constant;
-import com.codinggame.chess.board.Move;
 import com.codinggame.chess.board.Board;
+import com.codinggame.chess.board.Move;
 import com.codinggame.chess.board.pieces.Color;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 
 public class Evaluation {
@@ -50,7 +49,7 @@ public class Evaluation {
     }
 
     private void deep(int depth, Node node, Color color) {
-        if(depth==0){
+        if (depth == 0) {
             return;
         }
         if (isPanic()) {
@@ -62,25 +61,26 @@ public class Evaluation {
         if (Constant.DEBUG_EVAL) {
             System.err.println(otherColor + " play after " + node.move.move);
         }
-        List<Node> nodes = node.board.getMoves(otherColor)
-                .parallelStream()
-                .filter(m -> m.isTakePiece)
-                .map(m -> {
-                    Board newBoard = generateNewBoard(node.board, m);
-                    int score = newBoard.getScore();
-                    if (this.color == Color.black) {
-                        score = -score;
-                    }
-                    if (Constant.DEBUG_EVAL) {
-                        System.err.println(otherColor + " " + m.move + " " + score);
-                    }
-                    totEvaluation++;
-                    return new Node(m, score, newBoard, otherColor);
-                })
-                .collect(Collectors.toList());
+        List<Node> nodes = new ArrayList<>();
+        for (Move m : node.board.getMoves(otherColor)) {
+            if (m.isTakePiece) {
+
+                Board newBoard = generateNewBoard(node.board, m);
+                int score = newBoard.getScore();
+                if (this.color == Color.black) {
+                    score = -score;
+                }
+                if (Constant.DEBUG_EVAL) {
+                    System.err.println(otherColor + " " + m.move + " " + score);
+                }
+                totEvaluation++;
+                nodes.add(new Node(m, score, newBoard, otherColor));
+            }
+
+        }
         node.setChilds(nodes);
-        for(Node n : nodes){
-            deep(depth-1,n,otherColor);
+        for (Node n : nodes) {
+            deep(depth - 1, n, otherColor);
         }
 
     }
@@ -105,6 +105,9 @@ public class Evaluation {
         for (Node n : this.nodes) {
             if (Chrono.elapsedTime() > Chrono.MAX_TIME_GETBEST) {
                 System.err.println("panic on getBest at " + Chrono.elapsedTime());
+                if (best == null) {
+                    best = n;
+                }
                 return best;
             }
             Node node = MinMax.miniMax(n, Constant.DEEPER + 1, false);
