@@ -29,35 +29,35 @@ public class King extends Piece {
 
         List<Square> squares = new ArrayList<>();
         if (this.square.col - 1 >= 0) {
-            Square targetLeft = board.getSquare(this.square.row, this.square.col - 1);
+            Square targetLeft = Square.of(this.square.row, this.square.col - 1);
             squares.add(targetLeft);
         }
         if (this.square.col + 1 < 8) {
-            Square targetRight = board.getSquare(this.square.row, this.square.col + 1);
+            Square targetRight = Square.of(this.square.row, this.square.col + 1);
             squares.add(targetRight);
         }
         if (this.square.row - 1 >= 0) {
-            Square targetTop = board.getSquare(this.square.row - 1, this.square.col);
+            Square targetTop = Square.of(this.square.row - 1, this.square.col);
             squares.add(targetTop);
         }
         if (this.square.row + 1 < 8) {
-            Square targetBottom = board.getSquare(this.square.row + 1, this.square.col);
+            Square targetBottom = Square.of(this.square.row + 1, this.square.col);
             squares.add(targetBottom);
         }
         if (this.square.row - 1 >= 0 && this.square.col - 1 >= 0) {
-            Square targetLeftTop = board.getSquare(this.square.row - 1, this.square.col - 1);
+            Square targetLeftTop = Square.of(this.square.row - 1, this.square.col - 1);
             squares.add(targetLeftTop);
         }
         if (this.square.row - 1 >= 0 && this.square.col + 1 < 8) {
-            Square targetRightTop = board.getSquare(this.square.row - 1, this.square.col + 1);
+            Square targetRightTop = Square.of(this.square.row - 1, this.square.col + 1);
             squares.add(targetRightTop);
         }
         if (this.square.row + 1 < 8 && this.square.col - 1 >= 0) {
-            Square targetLeftBottom = board.getSquare(this.square.row + 1, this.square.col - 1);
+            Square targetLeftBottom = Square.of(this.square.row + 1, this.square.col - 1);
             squares.add(targetLeftBottom);
         }
         if (this.square.row + 1 < 8 && this.square.col + 1 < 8) {
-            Square targetRightBottom = board.getSquare(this.square.row + 1, this.square.col + 1);
+            Square targetRightBottom = Square.of(this.square.row + 1, this.square.col + 1);
             squares.add(targetRightBottom);
         }
 

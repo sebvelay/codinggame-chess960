@@ -245,7 +245,8 @@ class EvaluationTest {
 
     @Test
     void shouldTakeBishop() {
-        Constant.DEBUG_EVAL = false;
+        Constant.DEBUG_EVAL = true;
+        Constant.DEEPER=1;
         board = new Board("nqr1k1br/pppp1pQ1/6np/8/2P5/b7/1P1PPPPP/N1RBKNBR");
         Evaluation evaluation = new Evaluation(board, Color.white, Color.white, Constant.DEEPER);
 
@@ -305,6 +306,20 @@ class EvaluationTest {
         Node c5c4 = d3d4.getChilds().stream().filter(n -> n.move.move.equals("c5d4")).findFirst().get();
 
         assertNotNull(c5c4);
+
+    }
+
+    @Test
+    void evaluationShouldOnlyCreateNodeForOpponentWhenTakePiece(){
+        Board board = new Board("brkqnrnb/pppppppp/8/8/8/8/PPPPPPPP/BRKQNRNB");
+        Evaluation evaluation = new Evaluation(board,Color.white,Color.white,Constant.DEEPER);
+        assertEquals(20,evaluation.nodes.size());
+
+        List<Node> childsNode = evaluation.nodes.stream()
+                .flatMap(n -> n.getChilds().stream())
+                .collect(Collectors.toList());
+
+        assertEquals(0,childsNode.size());
 
     }
 

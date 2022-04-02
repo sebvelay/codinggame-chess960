@@ -34,7 +34,7 @@ public abstract class Piece {
 
         //sur la droite
         for (int i = currentY + 1; i < 8; i++) {
-            Square right = board.getSquare(currentX, i);
+            Square right = Square.of(currentX, i);
             if (board.getPiece(right) == null) {
                 legalsMove.add(new Move(this, right, false));
             } else if (board.getPiece(right).color != this.color) {
@@ -48,7 +48,7 @@ public abstract class Piece {
         //sur la gauche
 
         for (int i = currentY - 1; i >= 0; i--) {
-            Square left = board.getSquare(currentX, i);
+            Square left = Square.of(currentX, i);
             if (board.getPiece(left) == null) {
                 legalsMove.add(new Move(this, left, false));
             } else if (board.getPiece(left).color != this.color) {
@@ -61,7 +61,7 @@ public abstract class Piece {
 
         //en haut
         for (int i = currentX - 1; i >= 0; i--) {
-            Square up = board.getSquare(i, currentY);
+            Square up = Square.of(i, currentY);
             if (board.getPiece(up) == null) {
                 legalsMove.add(new Move(this, up, false));
             } else if (board.getPiece(up).color != this.color) {
@@ -75,7 +75,7 @@ public abstract class Piece {
         //en bas
 
         for (int i = currentX + 1; i < 8; i++) {
-            Square up = board.getSquare(i, currentY);
+            Square up = Square.of(i, currentY);
             if (board.getPiece(up) == null) {
                 legalsMove.add(new Move(this, up, false));
             } else if (board.getPiece(up).color != this.color) {
@@ -100,7 +100,7 @@ public abstract class Piece {
         int y = currentY - 1;
 
         while (x >= 0 && y >= 0) {
-            Square square = board.getSquare(x, y);
+            Square square = Square.of(x, y);
             if (board.getPiece(square) == null) {
                 legalMoves.add(new Move(this, square, false));
             } else if (board.getPiece(square).color != this.color) {
@@ -118,7 +118,7 @@ public abstract class Piece {
         y = currentY + 1;
 
         while (x >= 0 && y < 8) {
-            Square square = board.getSquare(x, y);
+            Square square = Square.of(x, y);
             if (board.getPiece(square) == null) {
                 legalMoves.add(new Move(this, square, false));
             } else if (board.getPiece(square).color != this.color) {
@@ -136,7 +136,7 @@ public abstract class Piece {
         y = currentY - 1;
 
         while (x < 8 && y >= 0) {
-            Square square = board.getSquare(x, y);
+            Square square = Square.of(x, y);
             if (board.getPiece(square) == null) {
                 legalMoves.add(new Move(this, square, false));
             } else if (board.getPiece(square).color != this.color) {
@@ -154,7 +154,7 @@ public abstract class Piece {
         y = currentY + 1;
 
         while (x < 8 && y < 8) {
-            Square square = board.getSquare(x, y);
+            Square square = Square.of(x, y);
             if (board.getPiece(square) == null) {
                 legalMoves.add(new Move(this, square, false));
             } else if (board.getPiece(square).color != this.color) {

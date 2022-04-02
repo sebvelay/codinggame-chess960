@@ -1,6 +1,6 @@
 package com.codinggame.chess;
 
-public abstract class Chrono {
+public class Chrono {
 
     public static final long MAX_TIME_EVALUATION = 43;
     public static final long MAX_TIME_GETBEST = 50;
@@ -8,7 +8,7 @@ public abstract class Chrono {
 
     public static long start;
 
-    public long elapsedTime() {
+    public static long elapsedTime() {
         return System.currentTimeMillis() - start;
     }
 }

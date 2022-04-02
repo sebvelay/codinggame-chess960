@@ -1,11 +1,18 @@
 package com.codinggame.chess.board;
 
-import java.util.Objects;
+import com.codinggame.chess.Cache;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class Square {
+    public static Map<String, Square> squaresPos = new HashMap<>();
+    public static Map<String, Square> squaresRowCols = new HashMap<>();
     public final int row;
     public final int col;
     public final String translate;
+
+
 
     public Square(final int row, final int col) {
         this.row = row;
@@ -13,16 +20,22 @@ public class Square {
         this.translate = translate();
     }
 
-    public Square(final String pos) {
-        String part1 = pos.substring(0, 1);
-        String part2 = pos.substring(1, 2);
-        //a1 = 7,0
-        //d6 = 2,3
+    public static Square of(String pos) {
+        return squaresPos.get(pos);
+    }
 
-        this.row = 8 - Integer.parseInt(part2);
-        String letters = "abcdefgh";
-        this.col = letters.indexOf(part1);
-        this.translate = pos;
+    public static Square of(int row, int cols) {
+        return squaresRowCols.get(row + "" + cols);
+    }
+
+    static {
+        for (int i = 0; i < Cache.ROWS; i++) {
+            for (int j = 0; j < Cache.COLS; j++) {
+                Square square = new Square(i, j);
+                squaresPos.put(square.translate, square);
+                squaresRowCols.put(square.row + "" + square.col, square);
+            }
+        }
     }
 
     private String translate() {
@@ -56,16 +69,5 @@ public class Square {
 
 
         return pos + (8 - row);
-    }
-
-    @Override
-    public boolean equals(final Object o) {
-        final Square square = (Square) o;
-        return row == square.row && col == square.col;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(row, col);
     }
 }

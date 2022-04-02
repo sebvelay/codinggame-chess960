@@ -16,7 +16,7 @@ class KnightTest {
     void shouldMove() {
         Board board = new Board("8/8/8/8/3N4/8/8/8");
 
-        Piece piece = board.getPiece(new Square("d4"));
+        Piece piece = board.getPiece(Square.of("d4"));
 
         List<String> moves = piece.legalsMove(board).stream().map(m -> m.move).collect(Collectors.toList());
 

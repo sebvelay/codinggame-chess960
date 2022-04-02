@@ -30,7 +30,7 @@ public class Pawn extends Piece {
 
         if (this.color.equals(Color.white)) {
             if (this.square.row - 1 >= 0) {
-                Square target1 = board.getSquare(this.square.row - 1, this.square.col);
+                Square target1 = Square.of(this.square.row - 1, this.square.col);
                 if (this.square.row > 0 && board.getPiece(target1) == null) {
                     if (target1.row == 0) {
                         promote = true;
@@ -39,7 +39,7 @@ public class Pawn extends Piece {
 
                     //si je peux avancer de deux
                     if (this.square.row - 2 >= 0) {
-                        Square target2 = board.getSquare(this.square.row - 2, this.square.col);
+                        Square target2 = Square.of(this.square.row - 2, this.square.col);
                         if (this.square.row == 6 && board.getPiece(target2) == null) {
                             legalsMove.add(new Move(this, target2, promote));
                         }
@@ -48,7 +48,7 @@ public class Pawn extends Piece {
 
                 //si je peux prendre a droite
                 if (this.square.row - 1 >= 0 && this.square.col + 1 < 8) {
-                    Square targetTakeRight = board.getSquare(this.square.row - 1, this.square.col + 1);
+                    Square targetTakeRight = Square.of(this.square.row - 1, this.square.col + 1);
                     if (board.getPiece(targetTakeRight) != null
                             && board.getPiece(targetTakeRight).color.equals(Color.black)) {
                         if (target1.row == 0) {
@@ -61,7 +61,7 @@ public class Pawn extends Piece {
                 }
                 //si je peux prendre a gauche
                 if (this.square.row - 1 >= 0 && this.square.col - 1 >= 0) {
-                    Square targetTakeLeft = board.getSquare(this.square.row - 1, this.square.col - 1);
+                    Square targetTakeLeft = Square.of(this.square.row - 1, this.square.col - 1);
                     if (board.getPiece(targetTakeLeft) != null
                             && board.getPiece(targetTakeLeft).color.equals(Color.black)) {
                         if (target1.row == 0) {
@@ -77,7 +77,7 @@ public class Pawn extends Piece {
 
         if (this.color.equals(Color.black)) {
             if (this.square.row + 1 < 8) {
-                Square target1 = board.getSquare(this.square.row + 1, this.square.col);
+                Square target1 = Square.of(this.square.row + 1, this.square.col);
                 if (this.square.row > 0 && board.getPiece(target1) == null) {
                     if (target1.row == 7) {
                         promote = true;
@@ -86,7 +86,7 @@ public class Pawn extends Piece {
 
                     //si je peux avancer de deux
                     if (this.square.row + 2 < 8) {
-                        Square target2 = board.getSquare(this.square.row + 2, this.square.col);
+                        Square target2 = Square.of(this.square.row + 2, this.square.col);
                         if (this.square.row == 1 && board.getPiece(target2) == null) {
                             legalsMove.add(new Move(this, target2, promote));
                         }
@@ -94,7 +94,7 @@ public class Pawn extends Piece {
                 }
                 //si je peux prendre a droite
                 if (this.square.row + 1 < 8 && this.square.col + 1 < 8) {
-                    Square targetTakeRight = board.getSquare(this.square.row + 1, this.square.col + 1);
+                    Square targetTakeRight = Square.of(this.square.row + 1, this.square.col + 1);
                     if (board.getPiece(targetTakeRight) != null
                             && board.getPiece(targetTakeRight).color.equals(Color.white)) {
                         if (target1.row == 7) {
@@ -106,7 +106,7 @@ public class Pawn extends Piece {
                 }
                 //si je peux prendre a gauche
                 if (this.square.row + 1 < 8 && this.square.col - 1 >= 0) {
-                    Square targetTakeLeft = board.getSquare(this.square.row + 1, this.square.col - 1);
+                    Square targetTakeLeft = Square.of(this.square.row + 1, this.square.col - 1);
                     if (board.getPiece(targetTakeLeft) != null
                             && board.getPiece(targetTakeLeft).color.equals(Color.white)) {
                         if (target1.row == 7) {

@@ -19,7 +19,7 @@ class QueenTest {
 
         Board board = new Board("8/8/P3b3/4r3/2Q5/8/8/2N2p2");
 
-        Piece queen = board.getPiece(new Square("c4"));
+        Piece queen = board.getPiece(Square.of("c4"));
 
         List<String> moves = queen.legalsMove(board).stream().map(m -> m.move).collect(Collectors.toList());
 

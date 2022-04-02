@@ -18,7 +18,7 @@ public class RookTest {
 
         Board board = new Board("8/pR3B2/8/8/1n6/8/8/8");
 
-        Piece rook = board.getPiece(new Square("b7"));
+        Piece rook = board.getPiece(Square.of("b7"));
 
         List<Move> moveList = rook.legalsMove(board);
 
@@ -36,7 +36,7 @@ public class RookTest {
     void shouldMove2(){
         Board board = new Board("8/8/8/8/2R5/8/8/8");
 
-        Piece rook = board.getPiece(new Square("c4"));
+        Piece rook = board.getPiece(Square.of("c4"));
 
         List<Move> moveList = rook.legalsMove(board);
 

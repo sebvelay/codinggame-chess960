@@ -17,7 +17,7 @@ class KingTest {
     void shouldMove(){
         Board board=new Board("8/8/1n6/K7/N7/8/8/8");
 
-        Piece king = board.getPiece(new Square("a5"));
+        Piece king = board.getPiece(Square.of("a5"));
 
         List<String> moves = king.legalsMove(board).stream().map(m->m.move).collect(Collectors.toList());
 

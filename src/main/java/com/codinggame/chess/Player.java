@@ -50,15 +50,13 @@ public class Player {
             }
             System.err.println("");
             long start = System.currentTimeMillis();
-            Game game = new Game(start);
+            Chrono.start = start;
 
 
             // Write an action using System.out.println()
             // To debug: System.err.println("Debug messages...");
-
+            Game game = new Game();
             game.play(fen, color, legalMovesFromGame);
-
-            //System.out.println("random");
         }
     }
 }

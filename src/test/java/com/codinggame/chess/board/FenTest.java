@@ -30,7 +30,7 @@ class FenTest {
         @Test
         void shouldTranslateBlackRook(){
             //r
-            Piece piece = board.getPieceFromFenSymbol('r',new Square(0,0));
+            Piece piece = board.getPieceFromFenSymbol('r',Square.of(0,0));
             Assertions.assertTrue(piece instanceof Rook);
             Assertions.assertEquals(Color.black,piece.color);
         }
@@ -38,7 +38,7 @@ class FenTest {
         @Test
         void shouldTranslateWhiteRook(){
             //R
-            Piece piece = board.getPieceFromFenSymbol('R',new Square(0,0));
+            Piece piece = board.getPieceFromFenSymbol('R',Square.of(0,0));
             Assertions.assertTrue(piece instanceof Rook);
             Assertions.assertEquals(Color.white,piece.color);
         }
@@ -46,7 +46,7 @@ class FenTest {
         @Test
         void shouldTranslateWhiteBishop(){
             //B
-            Piece piece = board.getPieceFromFenSymbol('B',new Square(0,0));
+            Piece piece = board.getPieceFromFenSymbol('B',Square.of(0,0));
             Assertions.assertTrue(piece instanceof Bishop);
             Assertions.assertEquals(Color.white,piece.color);
         }
@@ -54,7 +54,7 @@ class FenTest {
         @Test
         void shouldTranslateBlackBishop(){
             //B
-            Piece piece = board.getPieceFromFenSymbol('b',new Square(0,0));
+            Piece piece = board.getPieceFromFenSymbol('b',Square.of(0,0));
             Assertions.assertTrue(piece instanceof Bishop);
             Assertions.assertEquals(Color.black,piece.color);
         }
@@ -62,7 +62,7 @@ class FenTest {
         @Test
         void shouldTranslateBlackPawn(){
             //B
-            Piece piece = board.getPieceFromFenSymbol('p',new Square(0,0));
+            Piece piece = board.getPieceFromFenSymbol('p',Square.of(0,0));
             Assertions.assertTrue(piece instanceof Pawn);
             Assertions.assertEquals(Color.black,piece.color);
         }
@@ -70,7 +70,7 @@ class FenTest {
         @Test
         void shouldTranslateWhitePawn(){
             //B
-            Piece piece = board.getPieceFromFenSymbol('P',new Square(0,0));
+            Piece piece = board.getPieceFromFenSymbol('P',Square.of(0,0));
             Assertions.assertTrue(piece instanceof Pawn);
             Assertions.assertEquals(Color.white,piece.color);
         }
@@ -78,7 +78,7 @@ class FenTest {
         @Test
         void shouldTranslateBlackKnight(){
             //B
-            Piece piece = board.getPieceFromFenSymbol('n',new Square(0,0));
+            Piece piece = board.getPieceFromFenSymbol('n',Square.of(0,0));
             Assertions.assertTrue(piece instanceof Knight);
             Assertions.assertEquals(Color.black,piece.color);
         }
@@ -86,7 +86,7 @@ class FenTest {
         @Test
         void shouldTranslateWhiteKnight(){
             //B
-            Piece piece = board.getPieceFromFenSymbol('N',new Square(0,0));
+            Piece piece = board.getPieceFromFenSymbol('N',Square.of(0,0));
             Assertions.assertTrue(piece instanceof Knight);
             Assertions.assertEquals(Color.white,piece.color);
         }
@@ -94,7 +94,7 @@ class FenTest {
         @Test
         void shouldTranslateBlackKing(){
             //k
-            Piece piece = board.getPieceFromFenSymbol('k',new Square(0,0));
+            Piece piece = board.getPieceFromFenSymbol('k',Square.of(0,0));
             Assertions.assertTrue(piece instanceof King);
             Assertions.assertEquals(Color.black,piece.color);
         }
@@ -102,7 +102,7 @@ class FenTest {
         @Test
         void shouldTranslateWhiteKing(){
             //K
-            Piece piece = board.getPieceFromFenSymbol('K',new Square(0,0));
+            Piece piece = board.getPieceFromFenSymbol('K',Square.of(0,0));
             Assertions.assertTrue(piece instanceof King);
             Assertions.assertEquals(Color.white,piece.color);
         }
@@ -110,7 +110,7 @@ class FenTest {
         @Test
         void shouldTranslateBlackQueen(){
             //q
-            Piece piece = board.getPieceFromFenSymbol('q',new Square(0,0));
+            Piece piece = board.getPieceFromFenSymbol('q',Square.of(0,0));
             Assertions.assertTrue(piece instanceof Queen);
             Assertions.assertEquals(Color.black,piece.color);
         }
@@ -118,7 +118,7 @@ class FenTest {
         @Test
         void shouldTranslateWhiteQuen(){
             //Q
-            Piece piece = board.getPieceFromFenSymbol('Q',new Square(0,0));
+            Piece piece = board.getPieceFromFenSymbol('Q',Square.of(0,0));
             Assertions.assertTrue(piece instanceof Queen);
             Assertions.assertEquals(Color.white,piece.color);
         }

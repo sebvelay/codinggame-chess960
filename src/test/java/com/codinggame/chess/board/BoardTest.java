@@ -18,22 +18,22 @@ public class BoardTest {
     void shouldReturnPiece(){
         Board board = new Board("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR");
 
-        assertTrue(board.getPiece(new Square(0,0)) instanceof Rook);
+        assertTrue(board.getPiece(Square.of(0,0)) instanceof Rook);
     }
 
     @Test
     void shouldReturnPieceNull(){
         Board board = new Board("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR");
 
-        assertNull(board.getPiece(new Square(4,0)));
+        assertNull(board.getPiece(Square.of(4,0)));
     }
 
     @Test
     void shouldDeterminePosWithEmptyPos(){
         Board board = new Board("rnbqkbnr/pppppppp/8/8/3P4/8/PPP1PPPP/RNBQKBNR");
 
-        assertNull(board.getPiece(new Square(4,1)));
-        assertTrue(board.getPiece(new Square(4,3)) instanceof Pawn);
+        assertNull(board.getPiece(Square.of(4,1)));
+        assertTrue(board.getPiece(Square.of(4,3)) instanceof Pawn);
 
     }
 
@@ -41,8 +41,8 @@ public class BoardTest {
     void shouldDeterminePosWithDoubleEmptyPos(){
         Board board = new Board("rnbqkbnr/pppppppp/8/8/3P2P1/8/PPP1PP1P/RNBQKBNR");
 
-        assertTrue(board.getPiece(new Square(4,3)) instanceof  Pawn);
-        assertTrue(board.getPiece(new Square(4,6)) instanceof  Pawn);
+        assertTrue(board.getPiece(Square.of(4,3)) instanceof  Pawn);
+        assertTrue(board.getPiece(Square.of(4,6)) instanceof  Pawn);
 
     }
 
@@ -50,9 +50,9 @@ public class BoardTest {
     void shouldDeterminePosWithDoubleEmptyPosAndPawnAtStart(){
         Board board = new Board("rnbqkbnr/pppppppp/8/8/P2P2P1/8/1PP1PP1P/RNBQKBNR");
 
-        assertTrue(board.getPiece(new Square(4,0)) instanceof  Pawn);
-        assertTrue(board.getPiece(new Square(4,3)) instanceof  Pawn);
-        assertTrue(board.getPiece(new Square(4,6)) instanceof  Pawn);
+        assertTrue(board.getPiece(Square.of(4,0)) instanceof  Pawn);
+        assertTrue(board.getPiece(Square.of(4,3)) instanceof  Pawn);
+        assertTrue(board.getPiece(Square.of(4,6)) instanceof  Pawn);
 
     }
 
@@ -60,15 +60,15 @@ public class BoardTest {
     void shouldTakePiece(){
         Board board = new Board("8/8/2q5/3p4/2P5/2Q5/8/8");
 
-        Piece whitePawn = board.getPiece(new Square("c4"));
-        Piece blackPawn = board.getPiece(new Square("d5"));
+        Piece whitePawn = board.getPiece(Square.of("c4"));
+        Piece blackPawn = board.getPiece(Square.of("d5"));
 
-        Move move = new Move(true,whitePawn,new Square("d5"),blackPawn,false);
+        Move move = new Move(true,whitePawn,Square.of("d5"),blackPawn,false);
 
         Board newBoard = board.takePiece(move);
 
-        assertNull(newBoard.getPiece(new Square("c4")));
-        assertTrue(newBoard.getPiece(new Square("d5")).color.equals(Color.white));
+        assertNull(newBoard.getPiece(Square.of("c4")));
+        assertTrue(newBoard.getPiece(Square.of("d5")).color.equals(Color.white));
     }
 
     @Test
@@ -125,7 +125,7 @@ public class BoardTest {
     void shouldCreateBoardWithFen() {
         Board board = new Board("8/8/8/3P4/8/8/8/8");
 
-        Piece d5 = board.getPiece(new Square("d5"));
+        Piece d5 = board.getPiece(Square.of("d5"));
 
         assertTrue(d5 instanceof Pawn);
     }

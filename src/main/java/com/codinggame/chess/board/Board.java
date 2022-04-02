@@ -1,19 +1,11 @@
 package com.codinggame.chess.board;
 
 import com.codinggame.chess.Cache;
+import com.codinggame.chess.board.pieces.*;
 import com.codinggame.chess.board.score.MaterialScore;
 import com.codinggame.chess.board.score.PositionScore;
-import com.codinggame.chess.board.pieces.Bishop;
-import com.codinggame.chess.board.pieces.Color;
-import com.codinggame.chess.board.pieces.King;
-import com.codinggame.chess.board.pieces.Knight;
-import com.codinggame.chess.board.pieces.Pawn;
-import com.codinggame.chess.board.pieces.Piece;
-import com.codinggame.chess.board.pieces.Queen;
-import com.codinggame.chess.board.pieces.Rook;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -49,9 +41,9 @@ public class Board {
         Cache.cachedBoard.put(fen, this);
     }
 
-    public Square getSquare(int row, int col) {
+    /*public Square getSquare(int row, int col) {
         return Cache.squares[row][col];
-    }
+    }*/
 
     /**
      * Generate a new board and put on cache after move
@@ -117,7 +109,7 @@ public class Board {
                 newFen += "/";
             }
             for (int j = 0; j < Cache.COLS; j++) {
-                Square square = new Square(i, j);
+                Square square = Square.of(i, j);
                 Piece piece = this.getPiece(square);
                 if (piece == null) {
                     empty++;
@@ -178,7 +170,7 @@ public class Board {
         }
         List<Move> moves = this.getPieces(color).parallelStream()
                 .map(p -> p.legalsMove(this))
-                .flatMap(Collection::parallelStream)
+                .flatMap(n -> n.parallelStream())
                 .collect(Collectors.toList());
         cachedMoves.put(color, moves);
         return moves;
@@ -197,7 +189,7 @@ public class Board {
                 int j = Integer.parseInt(String.valueOf(b));
                 col = col + j;
             } else {
-                Piece piece = getPieceFromFenSymbol(b, this.getSquare(row, col));
+                Piece piece = getPieceFromFenSymbol(b, Square.of(row, col));
                 pieces.add(piece);
                 col++;
             }

@@ -25,35 +25,35 @@ public class Knight extends Piece {
         List<Square> squareList = new ArrayList<>();
 
         if (this.square.row - 1 >= 0 && this.square.col - 2 >= 0) {
-            Square target1 = board.getSquare(this.square.row - 1, this.square.col - 2);
+            Square target1 = Square.of(this.square.row - 1, this.square.col - 2);
             squareList.add(target1);
         }
         if (this.square.row - 2 >= 0 && this.square.col - 1 >= 0) {
-            Square target2 = board.getSquare(this.square.row - 2, this.square.col - 1);
+            Square target2 = Square.of(this.square.row - 2, this.square.col - 1);
             squareList.add(target2);
         }
         if (this.square.row - 1 >= 0 && this.square.col + 2 < 8) {
-            Square target3 = board.getSquare(this.square.row - 1, this.square.col + 2);
+            Square target3 = Square.of(this.square.row - 1, this.square.col + 2);
             squareList.add(target3);
         }
         if (this.square.row - 2 >= 0 && this.square.col + 1 < 8) {
-            Square target4 = board.getSquare(this.square.row - 2, this.square.col + 1);
+            Square target4 = Square.of(this.square.row - 2, this.square.col + 1);
             squareList.add(target4);
         }
         if (this.square.row + 1 < 8 && this.square.col + 2 < 8) {
-            Square target5 = board.getSquare(this.square.row + 1, this.square.col + 2);
+            Square target5 = Square.of(this.square.row + 1, this.square.col + 2);
             squareList.add(target5);
         }
         if (this.square.row + 2 < 8 && this.square.col + 1 < 8) {
-            Square target6 = board.getSquare(this.square.row + 2, this.square.col + 1);
+            Square target6 = Square.of(this.square.row + 2, this.square.col + 1);
             squareList.add(target6);
         }
         if (this.square.row + 2 < 8 && this.square.col - 1 >= 0) {
-            Square target7 = board.getSquare(this.square.row + 2, this.square.col - 1);
+            Square target7 = Square.of(this.square.row + 2, this.square.col - 1);
             squareList.add(target7);
         }
         if (this.square.row + 1 < 8 && this.square.col - 2 >= 0) {
-            Square target8 = board.getSquare(this.square.row + 1, this.square.col - 2);
+            Square target8 = Square.of(this.square.row + 1, this.square.col - 2);
             squareList.add(target8);
         }
 

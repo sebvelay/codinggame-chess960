@@ -21,33 +21,33 @@ class LegalMoveTest {
         @Test
         void legalMoveForBlackPawnInitPos() {
             board = new Board("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR");
-            Piece piece = board.getPiece(new Square(1, 0));
+            Piece piece = board.getPiece(Square.of(1, 0));
 
             List<Square> moves = piece.legalsMove(board).stream().map(m -> m.target).collect(Collectors.toList());
 
-            List<Square> expectedLegal = Arrays.asList(new Square(2, 0), new Square(3, 0));
+            List<Square> expectedLegal = Arrays.asList(Square.of(2, 0), Square.of(3, 0));
             Assertions.assertTrue(moves.containsAll(expectedLegal));
         }
 
         @Test
         void legalMoveForWhitePawnInitPos() {
             board = new Board("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR");
-            Piece piece = board.getPiece(new Square(6, 0));
+            Piece piece = board.getPiece(Square.of(6, 0));
 
             List<Square> moves = piece.legalsMove(board).stream().map(m -> m.target).collect(Collectors.toList());
 
-            List<Square> expectedLegal = Arrays.asList(new Square(5, 0), new Square(4, 0));
+            List<Square> expectedLegal = Arrays.asList(Square.of(5, 0), Square.of(4, 0));
             Assertions.assertTrue(moves.containsAll(expectedLegal));
         }
 
         @Test
         void legalMoveForWithePawn2SquareAfter() {
             board = new Board("rnbqkbnr/ppp1pppp/8/8/3p4/8/PPPPPPPP/RNBQKBNR");
-            Piece piece = board.getPiece(new Square(6, 3));
+            Piece piece = board.getPiece(Square.of(6, 3));
 
             List<Square> moves = piece.legalsMove(board).stream().map(m -> m.target).collect(Collectors.toList());
 
-            List<Square> expectedLegal = Arrays.asList(new Square(5, 3));
+            List<Square> expectedLegal = Arrays.asList(Square.of(5, 3));
             Assertions.assertTrue(moves.containsAll(expectedLegal));
             Assertions.assertEquals(1, moves.size());
         }
@@ -55,7 +55,7 @@ class LegalMoveTest {
         @Test
         void legalMoveForWithePawn1SquareAfter() {
             board = new Board("rnbqkbnr/ppp1pppp/8/8/8/3p4/PPPPPPPP/RNBQKBNR");
-            Piece piece = board.getPiece(new Square(6, 3));
+            Piece piece = board.getPiece(Square.of(6, 3));
 
             List<Square> moves = piece.legalsMove(board).stream().map(m -> m.target).collect(Collectors.toList());
 
@@ -65,11 +65,11 @@ class LegalMoveTest {
         @Test
         void legalMoveForBlackPawn2SquareAfter() {
             board = new Board("rnbqkbnr/pppppppp/8/3P4/8/8/PPP1PPPP/RNBQKBNR");
-            Piece piece = board.getPiece(new Square(1, 3));
+            Piece piece = board.getPiece(Square.of(1, 3));
 
             List<Square> moves = piece.legalsMove(board).stream().map(m -> m.target).collect(Collectors.toList());
 
-            List<Square> expectedLegal = Arrays.asList(new Square(2, 3));
+            List<Square> expectedLegal = Arrays.asList(Square.of(2, 3));
             Assertions.assertTrue(moves.containsAll(expectedLegal));
             Assertions.assertEquals(1, moves.size());
         }
@@ -77,7 +77,7 @@ class LegalMoveTest {
         @Test
         void legalMoveForBlackPawn1SquareAfter() {
             board = new Board("rnbqkbnr/pppppppp/3P4/8/8/8/PPP1PPPP/RNBQKBNR");
-            Piece piece = board.getPiece(new Square(1, 3));
+            Piece piece = board.getPiece(Square.of(1, 3));
 
             List<Square> moves = piece.legalsMove(board).stream().map(m -> m.target).collect(Collectors.toList());
 
@@ -88,7 +88,7 @@ class LegalMoveTest {
         void legalMoveForWhiteCanTakeRight() {
             board = new Board("8/8/8/3p4/2P5/8/8/8");
 
-            Piece piece = board.getPiece(new Square("c4"));
+            Piece piece = board.getPiece(Square.of("c4"));
 
             List<String> moves = piece.legalsMove(board).stream().map(m->m.move).collect(Collectors.toList());
 
@@ -100,7 +100,7 @@ class LegalMoveTest {
         void legalMoveForWhiteCanTakeLeft() {
             board = new Board("8/8/1p6/2P5/8/8/8/8");
 
-            Piece piece = board.getPiece(new Square("c5"));
+            Piece piece = board.getPiece(Square.of("c5"));
 
             List<String> moves = piece.legalsMove(board).stream().map(m->m.move).collect(Collectors.toList());
 
@@ -111,7 +111,7 @@ class LegalMoveTest {
         @Test
         void legalMoveForWhiteNoMove1() {
             board = new Board("8/8/p7/P7/8/8/8/8");
-            Piece piece = board.getPiece(new Square(3, 0));
+            Piece piece = board.getPiece(Square.of(3, 0));
 
             List<Move> moves = piece.legalsMove(board);
 
@@ -121,7 +121,7 @@ class LegalMoveTest {
         @Test
         void legalMoveForWhiteNoMove2() {
             board = new Board("8/8/7p/7P/8/8/8/8");
-            Piece piece = board.getPiece(new Square(3, 7));
+            Piece piece = board.getPiece(Square.of(3, 7));
 
             List<Move> moves = piece.legalsMove(board);
 

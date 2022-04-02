@@ -10,10 +10,9 @@ import java.util.List;
 public class Node {
     public final Move move;
     public int score;
-    private List<Node> childs;
+    public List<Node> childs;
     public final Board board;
     public final Color colorEvaluated;
-    public boolean checkMate = false;
 
     Node(final Move move, int score, Board board, Color color) {
         this.move = move;

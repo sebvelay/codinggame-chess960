@@ -2,30 +2,15 @@ package com.codinggame.chess;
 
 import com.codinggame.chess.board.Board;
 import com.codinggame.chess.board.pieces.Color;
-import com.codinggame.chess.board.pieces.Piece;
 import com.codinggame.chess.evaluation.Evaluation;
 import com.codinggame.chess.evaluation.Node;
 
-import java.util.HashMap;
 import java.util.List;
 
 
-public class Game extends Chrono {
+public class Game {
 
-    public static int turn=0;
-
-
-
-    HashMap<Piece, String> pieces = new HashMap<>(16);
-
-    public Game(long start) {
-        Chrono.start = start;
-    }
-
-    public Game() {
-        Chrono.start = System.currentTimeMillis();
-    }
-
+    public static int turn = 0;
 
     public void play(String fen, String color, List<String> legalMovesFromGame) {
         turn++;
@@ -38,10 +23,10 @@ public class Game extends Chrono {
 
         Color myColor = color.equals("w") ? Color.white : Color.black;
 
-        System.err.println("elpasedTime : " + elapsedTime());
+        System.err.println("elpasedTime : " + Chrono.elapsedTime());
 
 
-        System.err.println("start evaluation " + elapsedTime());
+        System.err.println("start evaluation " + Chrono.elapsedTime());
 
         Evaluation evaluation = new Evaluation(board, myColor, myColor,Constant.DEEPER);
         System.err.println("evaluate done");
