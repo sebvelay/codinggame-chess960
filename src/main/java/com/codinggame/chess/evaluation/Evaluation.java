@@ -19,7 +19,7 @@ public class Evaluation {
         this.color = color;
         List<Node> nodes = new ArrayList<>();
         for (Move m : board.getMoves(color)) {
-            System.err.println("new node " + Chrono.elapsedTime());
+            //System.err.println("new node " + Chrono.elapsedTime());
             Board newBoard = generateNewBoard(board, m);
             int score = newBoard.getScore();
             if (currentPlayer.equals(Color.black)) {
