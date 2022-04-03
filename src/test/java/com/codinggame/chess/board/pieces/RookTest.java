@@ -11,6 +11,8 @@ import java.util.stream.Collectors;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 public class RookTest {
 
     @Test
@@ -49,5 +51,17 @@ public class RookTest {
 
         Assertions.assertTrue(collect.containsAll(expected));
 
+    }
+
+    @Test
+    void rookControleSquare() {
+
+        Board board = new Board("k2RP3/2R1P3/2P1P3/3P4/8/8/8/8");
+        Piece rook = board.getPiece(Square.of("c7"));
+
+        List<Square> controlledSquare = rook.getControlledSquare(board);
+
+
+        assertEquals(4, controlledSquare.size());
     }
 }

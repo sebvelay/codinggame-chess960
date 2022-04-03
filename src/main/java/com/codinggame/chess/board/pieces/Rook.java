@@ -37,6 +37,6 @@ public class Rook extends Piece {
 
     @Override
     public List<Square> getControlledSquare(Board board) {
-        return new ArrayList<>();
+        return getSquaresInLine(board);
     }
 }

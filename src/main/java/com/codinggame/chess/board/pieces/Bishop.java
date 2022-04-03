@@ -4,7 +4,6 @@ import com.codinggame.chess.board.Board;
 import com.codinggame.chess.board.Move;
 import com.codinggame.chess.board.Square;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Bishop extends Piece {
@@ -25,7 +24,7 @@ public class Bishop extends Piece {
 
     @Override
     public List<Square> getControlledSquare(Board board) {
-        return new ArrayList<>();
+        return getSquareInDiagognale(board);
     }
 
     @Override
