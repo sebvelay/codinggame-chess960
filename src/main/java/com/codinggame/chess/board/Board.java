@@ -16,8 +16,8 @@ public class Board {
 
     public List<Piece> pieces = new ArrayList<>();
 
-    public Map<Color, List<Move>> cachedMoves = new HashMap<>();
-    public Map<Color, List<Piece>> cachedPieces = new HashMap<>();
+    public Map<Color, List<Move>> cachedMoves = new HashMap<>(2);
+    public Map<Color, List<Piece>> cachedPieces = new HashMap<>(2);
 
     public String fen;
 
@@ -54,11 +54,6 @@ public class Board {
         cachedMoves.put(color,legals);
 
     }
-
-    /*public Square getSquare(int row, int col) {
-        return Cache.squares[row][col];
-    }*/
-
 
     public Board move(final Move m) {
         Board newBoard;

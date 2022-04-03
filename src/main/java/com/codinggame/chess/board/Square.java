@@ -6,8 +6,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Square {
-    public static Map<String, Square> squaresPos = new HashMap<>();
-    public static Map<String, Square> squaresRowCols = new HashMap<>();
+    public static Map<String, Square> squaresPos = new HashMap<>(64);
+    public static Map<String, Square> squaresRowCols = new HashMap<>(64);
     public final int row;
     public final int col;
     public final String translate;
