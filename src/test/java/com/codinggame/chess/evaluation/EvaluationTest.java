@@ -49,11 +49,7 @@ class EvaluationTest {
         Evaluation evaluation = new Evaluation(board, Color.white, Color.white, Constant.DEEPER);
         Node best = evaluation.getBest();
 
-        assertEquals("c4d5", best.move.move);
-
         //si je prend le pion je perd la dame
-        best = evaluation.getBest();
-
         assertNotEquals("c4d5", best.move.move);
     }
 
@@ -255,20 +251,6 @@ class EvaluationTest {
 
         assertEquals("b2a3", best.move.move);
 
-    }
-
-    @Test
-    void shouldCheckWithBishop() {
-        Constant.DEBUG_EVAL = true;
-
-        board = new Board("q2nbnr1/3p1p2/ppr1pk2/2p4p/P1P1P2P/1P1PNPPR/4R3/1Bb1BNK1");
-
-        Evaluation evaluation = new Evaluation(board, Color.white, Color.white, Constant.DEEPER);
-
-        Node best = evaluation.getBest();
-
-
-        assertEquals("e1c3", best.move.move);
     }
 
     @Test

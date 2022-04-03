@@ -2,6 +2,7 @@ package com.codinggame.chess.board;
 
 import com.codinggame.chess.Cache;
 import com.codinggame.chess.board.pieces.*;
+import com.codinggame.chess.board.score.CheckScore;
 import com.codinggame.chess.board.score.MaterialScore;
 import com.codinggame.chess.board.score.PositionScore;
 
@@ -40,14 +41,39 @@ public class Board {
         Cache.cachedBoard.put(fen, this);
     }
 
+    public Board(String fen, List<String> legalsMove, Color color) {
+        this.applyFen(fen);
+        List<Move> moves = getMoves(color);
+        List<Move> legals = new ArrayList<>();
+        for(Move move : moves){
+            if(legalsMove.contains(move.move)){
+                legals.add(move);
+            }
+        }
+        //on met à jour le cache
+        cachedMoves.put(color,legals);
+
+    }
+
     /*public Square getSquare(int row, int col) {
         return Cache.squares[row][col];
     }*/
 
+
+    public Board move(final Move m) {
+        Board newBoard;
+        if (m.isTakePiece) {
+            newBoard = this.takePiece(m);
+        } else {
+            newBoard = this.movePiece(m);
+        }
+        return newBoard;
+    }
+
     /**
      * Generate a new board and put on cache after move
      */
-    public Board takePiece(Move m) {
+    private Board takePiece(final Move m) {
         Board newBoard = new Board(this);
         Piece promoted = null;
         Piece toRemove = null;
@@ -76,7 +102,7 @@ public class Board {
     /**
      * Generate a new board and put on cache after move
      */
-    public Board move(final Move m) {
+    private Board movePiece(final Move m) {
         Board newBoard = new Board(this);
         Piece promoted = null;
         Piece toRemove = null;
@@ -226,17 +252,11 @@ public class Board {
         return piece;
     }
 
-    public boolean isCheck(Color color) {
-        Color opponent = Color.black;
-        if (color.equals(Color.black)) {
-            opponent = Color.white;
-        }
-        List<Piece> pieces = this.getPieces(opponent);
-        for (Piece p : pieces) {
-            for (Move m : p.legalsMove(this)) {
-                if (m.isTakePiece && m.takenPiece instanceof King) {
-                    return true;
-                }
+    public boolean isDoACheck(Color color) {
+        List<Move> moves = getMoves(color);
+        for (Move m : moves) {
+            if (m.isTakePiece && m.takenPiece instanceof King) {
+                return true;
             }
         }
         return false;
@@ -256,6 +276,8 @@ public class Board {
         int scoreBlack = MaterialScore.evaluate(this, Color.black);
         scoreWhite += PositionScore.evaluate(this, Color.white);
         scoreBlack += PositionScore.evaluate(this, Color.black);
+        scoreWhite += CheckScore.evaluate(this, Color.white);
+        scoreBlack += CheckScore.evaluate(this, Color.black);
         int score = 0;
 
 

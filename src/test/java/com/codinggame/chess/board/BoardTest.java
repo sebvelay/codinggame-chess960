@@ -6,8 +6,10 @@ import com.codinggame.chess.board.pieces.Pawn;
 import com.codinggame.chess.board.pieces.Piece;
 import com.codinggame.chess.board.pieces.Rook;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+
+import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -65,7 +67,7 @@ public class BoardTest {
 
         Move move = new Move(true,whitePawn,Square.of("d5"),blackPawn,false);
 
-        Board newBoard = board.takePiece(move);
+        Board newBoard = board.move(move);
 
         assertNull(newBoard.getPiece(Square.of("c4")));
         assertTrue(newBoard.getPiece(Square.of("d5")).color.equals(Color.white));
@@ -75,7 +77,7 @@ public class BoardTest {
     void isCheckBlack(){
         Board board = new Board("8/8/2k5/8/8/2Q5/8/8");
 
-        boolean check = board.isCheck(Color.black);
+        boolean check = board.isDoACheck(Color.white);
 
         assertTrue(check);
     }
@@ -84,7 +86,7 @@ public class BoardTest {
     void isNotCheckBlack(){
         Board board = new Board("8/8/2k5/8/3Q4/8/8/8");
 
-        boolean check = board.isCheck(Color.black);
+        boolean check = board.isDoACheck(Color.black);
 
         assertFalse(check);
     }
@@ -94,7 +96,7 @@ public class BoardTest {
 
         Board board = new Board("1k2P3/R3P3/2PRP3/3P4/8/8/8/8");
 
-        boolean check = board.isCheck(Color.black);
+        boolean check = board.isDoACheck(Color.black);
 
         assertFalse(check);
 
@@ -155,11 +157,21 @@ public class BoardTest {
     void takePieceShouldGenerateNewBoad(){
         Board board = new Board("8/8/4p3/3P4/8/8/8/8");
         Move d5e6 = board.getMoves(Color.white).stream().filter(m -> m.move.equals("d5e6")).findFirst().get();
-        Board newBoardAfterTakePiece = board.takePiece(d5e6);
+        Board newBoardAfterTakePiece = board.move(d5e6);
 
         assertEquals("8/8/4P3/8/8/8/8/8",newBoardAfterTakePiece.getFen());
 
         assertEquals(Cache.cachedBoard.get("8/8/4p3/3P4/8/8/8/8"),board);
         assertEquals(Cache.cachedBoard.get("8/8/4P3/8/8/8/8/8"),newBoardAfterTakePiece);
+    }
+
+    @Test
+    void createBoardWithListOfMove(){
+        List<String> legalsMove = Arrays.asList("g3g4","g3f3","g3h3");
+        Board board = new Board("2b1kr2/4p1pp/1q3p2/P2p1n2/8/BPrn2K1/6P1/1B4bN",legalsMove,Color.white);
+
+        List<Move> moves = board.getMoves(Color.white);
+
+        assertEquals(3,moves.size());
     }
 }

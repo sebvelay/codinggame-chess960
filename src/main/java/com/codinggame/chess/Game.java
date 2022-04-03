@@ -14,21 +14,17 @@ public class Game {
 
     public void play(String fen, String color, List<String> legalMovesFromGame) {
         turn++;
-        Board board = null;
-        if (Cache.cachedBoard.containsKey(fen)) {
-            board = Cache.cachedBoard.get(fen);
-        } else {
-            board = new Board(fen);
-        }
-
         Color myColor = color.equals("w") ? Color.white : Color.black;
+        Board board = new Board(fen, legalMovesFromGame, myColor);
+        Cache.cachedBoard.put(fen, board);
+
 
         System.err.println("elpasedTime : " + Chrono.elapsedTime());
 
 
         System.err.println("start evaluation " + Chrono.elapsedTime());
 
-        Evaluation evaluation = new Evaluation(board, myColor, myColor,Constant.DEEPER);
+        Evaluation evaluation = new Evaluation(board, myColor, myColor, Constant.DEEPER);
         System.err.println("evaluate done");
         Node best = evaluation.getBest();
         if (best != null) {

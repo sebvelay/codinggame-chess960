@@ -11,15 +11,13 @@ import java.util.List;
 
 
 public class Evaluation {
-    public List<Node> nodes;
+    public List<Node> nodes = new ArrayList<>();
     Color color;
     int totEvaluation = 0;
 
     public Evaluation(Board board, Color color, Color currentPlayer, int deep) {
         this.color = color;
-        List<Node> nodes = new ArrayList<>();
         for (Move m : board.getMoves(color)) {
-            //System.err.println("new node " + Chrono.elapsedTime());
             Board newBoard = generateNewBoard(board, m);
             int score = newBoard.getScore();
             if (currentPlayer.equals(Color.black)) {
@@ -30,22 +28,20 @@ public class Evaluation {
             }
             totEvaluation++;
             nodes.add(new Node(m, score, newBoard, color));
+            if (isPanic()) {
+                System.err.println("panic on create node after : " + Chrono.elapsedTime() + " tot eval = " + totEvaluation);
+                return;
+            }
         }
 
-        this.nodes = nodes;
         for (Node node : nodes) {
             if (isPanic()) {
-                System.err.println("panic on Evaluation" + Chrono.elapsedTime() + " tot eval = " + totEvaluation);
+                System.err.println("panic on Evaluation deeper" + Chrono.elapsedTime() + " tot eval = " + totEvaluation);
                 return;
             }
             deep(deep, node, color);
         }
         System.err.println("Finish evaluation at " + Chrono.elapsedTime() + " for " + this.totEvaluation + " evaluation");
-    }
-
-    private boolean isPanic() {
-        return Chrono.elapsedTime() > Chrono.MAX_TIME_EVALUATION;
-
     }
 
     private void deep(int depth, Node node, Color color) {
@@ -85,14 +81,14 @@ public class Evaluation {
 
     }
 
+    private boolean isPanic() {
+        return Chrono.elapsedTime() > Chrono.MAX_TIME_EVALUATION;
+
+    }
+
+
     private Board generateNewBoard(final Board board, final Move m) {
-        Board newBoard = null;
-        if (m.isTakePiece) {
-            newBoard = board.takePiece(m);
-        } else {
-            newBoard = board.move(m);
-        }
-        return newBoard;
+        return board.move(m);
     }
 
     public Node getBest() {
