@@ -24,8 +24,20 @@ public class King extends Piece {
     }
 
     @Override
+    public List<Square> getControlledSquare(Board board) {
+        return new ArrayList<>();
+    }
+
+    @Override
     public List<Move> legalsMove(Board board) {
         List<Move> legalMoves = new ArrayList<>();
+
+        Color opponent = this.color.equals(Color.white) ? Color.black : Color.white;
+        List<Piece> pieces = board.getPieces(opponent);
+        List<Square> illegalSquare = new ArrayList<>();
+        for (Piece p : pieces) {
+            illegalSquare.addAll(p.getControlledSquare(board));
+        }
 
         List<Square> squares = new ArrayList<>();
         if (this.square.col - 1 >= 0) {
@@ -63,13 +75,16 @@ public class King extends Piece {
 
 
         for (Square s : squares) {
-            if (s.row >= 0 && s.row <= 7 && s.col >= 0 && s.col <= 7) {
-                if (board.getPiece(s) == null) {
-                    legalMoves.add(new Move(this, s, false));
-                } else if (board.getPiece(s).color != this.color) {
-                    legalMoves.add(new Move(true, this, s, board.getPiece(s), false));
+            if (!illegalSquare.contains(s)) {
+                if (s.row >= 0 && s.row <= 7 && s.col >= 0 && s.col <= 7) {
+                    if (board.getPiece(s) == null) {
+                        legalMoves.add(new Move(this, s, false));
+                    } else if (board.getPiece(s).color != this.color) {
+                        legalMoves.add(new Move(true, this, s, board.getPiece(s), false));
+                    }
                 }
             }
+
         }
 
         return legalMoves;

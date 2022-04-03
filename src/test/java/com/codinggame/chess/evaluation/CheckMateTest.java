@@ -1,5 +1,6 @@
 package com.codinggame.chess.evaluation;
 
+import com.codinggame.chess.Chrono;
 import com.codinggame.chess.Constant;
 import com.codinggame.chess.board.Board;
 import com.codinggame.chess.board.Move;
@@ -9,10 +10,16 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class CheckMateTest {
 
+    @BeforeEach
+    void setUp() {
+        Chrono.start = System.currentTimeMillis() + 1000000;
+
+    }
 
     @Test
     void checkMate(){

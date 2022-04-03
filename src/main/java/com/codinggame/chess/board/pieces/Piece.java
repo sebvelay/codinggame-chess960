@@ -29,6 +29,21 @@ public abstract class Piece {
     public List<Move> getMovesInLine(final Board board) {
         List<Move> legalsMove = new ArrayList<>();
 
+        List<Square> squaresInLine = getSquaresInLine(board);
+        for (Square square : squaresInLine) {
+            if (board.getPiece(square) == null) {
+                legalsMove.add(new Move(this, square, false));
+            } else if (board.getPiece(square).color != this.color) {
+                legalsMove.add(new Move(true, this, square, board.getPiece(square), false));
+            }
+        }
+
+        return legalsMove;
+    }
+
+    List<Square> getSquaresInLine(Board board) {
+        List<Square> squares = new ArrayList<>();
+
         int currentX = this.square.row;
         int currentY = this.square.col;
 
@@ -36,9 +51,9 @@ public abstract class Piece {
         for (int i = currentY + 1; i < 8; i++) {
             Square right = Square.of(currentX, i);
             if (board.getPiece(right) == null) {
-                legalsMove.add(new Move(this, right, false));
+                squares.add(right);
             } else if (board.getPiece(right).color != this.color) {
-                legalsMove.add(new Move(true, this, right, board.getPiece(right), false));
+                squares.add(right);
                 break;
             } else {
                 break;
@@ -50,9 +65,9 @@ public abstract class Piece {
         for (int i = currentY - 1; i >= 0; i--) {
             Square left = Square.of(currentX, i);
             if (board.getPiece(left) == null) {
-                legalsMove.add(new Move(this, left, false));
+                squares.add(left);
             } else if (board.getPiece(left).color != this.color) {
-                legalsMove.add(new Move(true, this, left, board.getPiece(left), false));
+                squares.add(left);
                 break;
             } else {
                 break;
@@ -63,9 +78,9 @@ public abstract class Piece {
         for (int i = currentX - 1; i >= 0; i--) {
             Square up = Square.of(i, currentY);
             if (board.getPiece(up) == null) {
-                legalsMove.add(new Move(this, up, false));
+                squares.add(up);
             } else if (board.getPiece(up).color != this.color) {
-                legalsMove.add(new Move(true, this, up, board.getPiece(up), false));
+                squares.add(up);
                 break;
             } else {
                 break;
@@ -75,22 +90,23 @@ public abstract class Piece {
         //en bas
 
         for (int i = currentX + 1; i < 8; i++) {
-            Square up = Square.of(i, currentY);
-            if (board.getPiece(up) == null) {
-                legalsMove.add(new Move(this, up, false));
-            } else if (board.getPiece(up).color != this.color) {
-                legalsMove.add(new Move(true, this, up, board.getPiece(up), false));
+            Square bottom = Square.of(i, currentY);
+            if (board.getPiece(bottom) == null) {
+                squares.add(bottom);
+            } else if (board.getPiece(bottom).color != this.color) {
+                squares.add(bottom);
                 break;
             } else {
                 break;
             }
         }
 
-        return legalsMove;
+
+        return squares;
     }
 
-    public List<Move> getMovesInDiagognale(final Board board) {
-        List<Move> legalMoves = new ArrayList<>();
+    List<Square> getSquareInDiagognale(final Board board) {
+        List<Square> squares = new ArrayList<>();
 
         int currentX = this.square.row;
         int currentY = this.square.col;
@@ -102,9 +118,9 @@ public abstract class Piece {
         while (x >= 0 && y >= 0) {
             Square square = Square.of(x, y);
             if (board.getPiece(square) == null) {
-                legalMoves.add(new Move(this, square, false));
+                squares.add(square);
             } else if (board.getPiece(square).color != this.color) {
-                legalMoves.add(new Move(true, this, square, board.getPiece(square), false));
+                squares.add(square);
                 break;
             } else {
                 break;
@@ -120,9 +136,9 @@ public abstract class Piece {
         while (x >= 0 && y < 8) {
             Square square = Square.of(x, y);
             if (board.getPiece(square) == null) {
-                legalMoves.add(new Move(this, square, false));
+                squares.add(square);
             } else if (board.getPiece(square).color != this.color) {
-                legalMoves.add(new Move(true, this, square, board.getPiece(square), false));
+                squares.add(square);
                 break;
             } else {
                 break;
@@ -138,9 +154,9 @@ public abstract class Piece {
         while (x < 8 && y >= 0) {
             Square square = Square.of(x, y);
             if (board.getPiece(square) == null) {
-                legalMoves.add(new Move(this, square, false));
+                squares.add(square);
             } else if (board.getPiece(square).color != this.color) {
-                legalMoves.add(new Move(true, this, square, board.getPiece(square), false));
+                squares.add(square);
                 break;
             } else {
                 break;
@@ -156,9 +172,9 @@ public abstract class Piece {
         while (x < 8 && y < 8) {
             Square square = Square.of(x, y);
             if (board.getPiece(square) == null) {
-                legalMoves.add(new Move(this, square, false));
+                squares.add(square);
             } else if (board.getPiece(square).color != this.color) {
-                legalMoves.add(new Move(true, this, square, board.getPiece(square), false));
+                squares.add(square);
                 break;
             } else {
                 break;
@@ -166,8 +182,22 @@ public abstract class Piece {
             x++;
             y++;
         }
+        return squares;
+    }
 
+    public List<Move> getMovesInDiagognale(final Board board) {
+        List<Move> legalMoves = new ArrayList<>();
+
+        List<Square> squareInDiagognale = getSquareInDiagognale(board);
+        for (Square square : squareInDiagognale) {
+            if (board.getPiece(square) == null) {
+                legalMoves.add(new Move(this, square, false));
+            } else if (board.getPiece(square).color != this.color) {
+                legalMoves.add(new Move(true, this, square, board.getPiece(square), false));
+            }
+        }
         return legalMoves;
     }
 
+    public abstract List<Square> getControlledSquare(Board board);
 }

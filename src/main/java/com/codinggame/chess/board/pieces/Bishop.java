@@ -4,6 +4,7 @@ import com.codinggame.chess.board.Board;
 import com.codinggame.chess.board.Move;
 import com.codinggame.chess.board.Square;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Bishop extends Piece {
@@ -20,6 +21,11 @@ public class Bishop extends Piece {
     @Override
     public Piece clonePiece() {
         return new Bishop(this.square, this.color);
+    }
+
+    @Override
+    public List<Square> getControlledSquare(Board board) {
+        return new ArrayList<>();
     }
 
     @Override

@@ -14,6 +14,11 @@ public class Pawn extends Piece {
         return new Pawn(this.square, this.color);
     }
 
+    @Override
+    public List<Square> getControlledSquare(Board board) {
+        return new ArrayList<>();
+    }
+
     public Pawn(final Square square, Color color) {
         super(square, color);
         if (color.equals(Color.black)) {

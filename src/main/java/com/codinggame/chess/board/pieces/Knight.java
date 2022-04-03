@@ -78,4 +78,9 @@ public class Knight extends Piece {
     public Piece clonePiece() {
         return new Knight(this.square, this.color);
     }
+
+    @Override
+    public List<Square> getControlledSquare(Board board) {
+        return new ArrayList<>();
+    }
 }

@@ -26,4 +26,14 @@ class KingTest {
         Assertions.assertTrue(moves.containsAll(expected));
         Assertions.assertTrue(expected.containsAll(moves));
     }
+
+    @Test
+    void cantMoveIfImCheck(){
+        Board board = new Board("k7/3Q4/8/8/8/8/8/8");
+        Piece king = board.getPiece(Square.of("a8"));
+        List<String> moves = king.legalsMove(board).stream().map(m->m.move).collect(Collectors.toList());
+        List<String> expected = Arrays.asList("a8b8");
+        Assertions.assertTrue(moves.containsAll(expected));
+        Assertions.assertTrue(expected.containsAll(moves));
+    }
 }
