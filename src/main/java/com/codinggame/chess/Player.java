@@ -25,11 +25,17 @@ public class Player {
 
 
             String fen = in.next();
+            /**
+             * on commence à mesurer le temps
+             */
+            startChrono();
+
             String color = in.next();
             String castling = in.next();
             String enPassant = in.next();
             int halfMoveClock = in.nextInt();
             int fullMove = in.nextInt();
+
 
             System.err.println("fen " + fen);
             System.err.println("color " + color);
@@ -45,12 +51,11 @@ public class Player {
                 String move = in.next();
                 legalMovesFromGame.add(move);
             }
-            for (int i = 0; i < movesNum; i++) {
+
+            /*for (int i = 0; i < movesNum; i++) {
                 System.err.print("\"" + legalMovesFromGame.get(i) + "\",");
             }
-            System.err.println("");
-            long start = System.currentTimeMillis();
-            Chrono.start = start;
+            System.err.println("");*/
 
 
             // Write an action using System.out.println()
@@ -58,5 +63,10 @@ public class Player {
             Game game = new Game();
             game.play(fen, color, legalMovesFromGame);
         }
+    }
+
+    private static void startChrono() {
+        long start = System.currentTimeMillis();
+        Chrono.start = start;
     }
 }

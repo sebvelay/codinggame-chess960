@@ -5,6 +5,7 @@ import com.codinggame.chess.board.pieces.Color;
 import com.codinggame.chess.evaluation.Evaluation;
 import com.codinggame.chess.evaluation.Node;
 
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -16,11 +17,8 @@ public class Game {
         turn++;
         Color myColor = color.equals("w") ? Color.white : Color.black;
         Board board = new Board(fen, legalMovesFromGame, myColor);
+        Cache.cachedBoard = new HashMap<>();
         Cache.cachedBoard.put(fen, board);
-
-
-        System.err.println("elpasedTime : " + Chrono.elapsedTime());
-
 
         System.err.println("start evaluation " + Chrono.elapsedTime());
 
@@ -30,7 +28,7 @@ public class Game {
         if (best != null) {
             System.err.println("take a best " + best.move.move);
             if (legalMovesFromGame.contains(best.move.move)) {
-                System.out.println(best.move.move);
+                System.out.println(best.move.move + " " + Chrono.elapsedTime());
             } else {
                 System.out.println("random");
             }

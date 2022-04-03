@@ -18,7 +18,15 @@ public class Evaluation {
     public Evaluation(Board board, Color color, Color currentPlayer, int deep) {
         this.color = color;
         for (Move m : board.getMoves(color)) {
+            if (isPanic()) {
+                System.err.println("panic on create node after : " + Chrono.elapsedTime() + " tot eval = " + totEvaluation);
+                return;
+            }
             Board newBoard = generateNewBoard(board, m);
+            if (isPanic()) {
+                System.err.println("panic after generate board : " + Chrono.elapsedTime() + " tot eval = " + totEvaluation);
+                return;
+            }
             int score = newBoard.getScore();
             if (currentPlayer.equals(Color.black)) {
                 score = -score;
@@ -28,11 +36,9 @@ public class Evaluation {
             }
             totEvaluation++;
             nodes.add(new Node(m, score, newBoard, color));
-            if (isPanic()) {
-                System.err.println("panic on create node after : " + Chrono.elapsedTime() + " tot eval = " + totEvaluation);
-                return;
-            }
+
         }
+        System.err.println("perform all moves on "+Chrono.elapsedTime());
 
         for (Node node : nodes) {
             if (isPanic()) {
@@ -59,9 +65,17 @@ public class Evaluation {
         }
         List<Node> nodes = new ArrayList<>();
         for (Move m : node.board.getMoves(otherColor)) {
+            if (isPanic()) {
+                System.err.println("panic on deep, on move loop : " + Chrono.elapsedTime() + " tot eval = " + totEvaluation);
+                return;
+            }
             if (m.isTakePiece) {
 
                 Board newBoard = generateNewBoard(node.board, m);
+                if (isPanic()) {
+                    System.err.println("panic after generate board on deep : " + Chrono.elapsedTime() + " tot eval = " + totEvaluation);
+                    return;
+                }
                 int score = newBoard.getScore();
                 if (this.color == Color.black) {
                     score = -score;
@@ -76,6 +90,10 @@ public class Evaluation {
         }
         node.setChilds(nodes);
         for (Node n : nodes) {
+            if (isPanic()) {
+                System.err.println("panic on deeper + 1 " + Chrono.elapsedTime() + " tot eval = " + totEvaluation);
+                return;
+            }
             deep(depth - 1, n, otherColor);
         }
 
