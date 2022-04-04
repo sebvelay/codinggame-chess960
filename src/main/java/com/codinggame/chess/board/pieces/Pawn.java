@@ -16,7 +16,32 @@ public class Pawn extends Piece {
 
     @Override
     public List<Square> getControlledSquare(Board board) {
-        return new ArrayList<>();
+        ArrayList<Square> squares = new ArrayList<>();
+        if (this.color.equals(Color.white)) {
+            if (this.square.row - 1 >= 0 && this.square.col + 1 < 8) {
+                Square targetTakeRight = Square.of(this.square.row - 1, this.square.col + 1);
+                squares.add(targetTakeRight);
+            }
+            //si je peux prendre a gauche
+            if (this.square.row - 1 >= 0 && this.square.col - 1 >= 0) {
+                Square targetTakeLeft = Square.of(this.square.row - 1, this.square.col - 1);
+                squares.add(targetTakeLeft);
+
+            }
+        }
+        if (this.color.equals(Color.black)) {
+            if (this.square.row + 1 < 8 && this.square.col + 1 < 8) {
+                Square targetTakeRight = Square.of(this.square.row + 1, this.square.col + 1);
+                squares.add(targetTakeRight);
+
+            }
+            if (this.square.row + 1 < 8 && this.square.col - 1 >= 0) {
+                Square targetTakeLeft = Square.of(this.square.row + 1, this.square.col - 1);
+                squares.add(targetTakeLeft);
+
+            }
+        }
+        return squares;
     }
 
     public Pawn(final Square square, Color color) {

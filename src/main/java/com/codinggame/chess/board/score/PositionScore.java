@@ -8,6 +8,9 @@ public class PositionScore {
         //return 0;
         int score = 0;
         score += board.getMoves(color).size();
+
+
+
         return score;
     }
 }
