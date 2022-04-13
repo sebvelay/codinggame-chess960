@@ -1,10 +1,7 @@
 package com.codinggame.chess.board;
 
 import com.codinggame.chess.Cache;
-import com.codinggame.chess.board.pieces.Color;
-import com.codinggame.chess.board.pieces.Pawn;
-import com.codinggame.chess.board.pieces.Piece;
-import com.codinggame.chess.board.pieces.Rook;
+import com.codinggame.chess.board.pieces.*;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -12,7 +9,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class BoardTest {
+class BoardTest {
 
     @Test
     void shouldReturnPiece() {
@@ -184,4 +181,15 @@ public class BoardTest {
 
         assertEquals(boardAfterMove, m.boardAfterMove);
     }
+
+    @Test
+    void shouldReturnPieceOnBoard(){
+        Board board = new Board("R7/8/8/3b4/8/8/8/8");
+        Piece a8 = board.getPiece(Square.of("a8"));
+        Piece b = board.getPiece(Square.of("d5"));
+
+        assertTrue(a8 instanceof Rook);
+        assertTrue(b instanceof Bishop);
+    }
+
 }

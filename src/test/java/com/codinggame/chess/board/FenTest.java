@@ -131,7 +131,7 @@ class FenTest {
         void shouldCreate32PiecesAtStart(){
             Board board = new Board("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR");
 
-            Assertions.assertEquals(32,board.pieces.size());
+            Assertions.assertEquals(32,board.getPieces().size());
         }
 
     }

@@ -43,6 +43,17 @@ class BugEvaluation {
 
     }
 
+    @Test
+    void bugEvaluation3(){
+        Constant.DEEPER=5;
+        Constant.DEBUG_EVAL=true;
+        Board board = new Board("nr1k1qr1/p1pppp2/b4n2/2P3p1/3P1b2/7R/1BN1PP1p/1R1KNQ1B");
+        Evaluation evaluation = new Evaluation(board, Color.white,Color.white,Constant.DEEPER);
+        Node best = evaluation.getBest();
+        System.err.println(best.move.move);
+        assertNotEquals("d4d5",best.move.move);
+    }
+
 
     
 }

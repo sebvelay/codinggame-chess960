@@ -7,21 +7,14 @@ import com.codinggame.chess.board.score.MaterialScore;
 import com.codinggame.chess.board.score.PositionScore;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class Board {
 
-
-    public List<Piece> pieces = new ArrayList<>();
-
-    public Map<Color, List<Move>> cachedMoves = new HashMap<>(2);
-    public Map<Color, List<Piece>> cachedPieces = new HashMap<>(2);
-
     public String fen;
-
     public Integer score = null;
+    private Piece[][] pieces = new Piece[8][8];
+    private List<Move> legalsMove = null;
 
     private Board() {
 
@@ -45,13 +38,14 @@ public class Board {
         this.applyFen(fen);
         List<Move> moves = getMoves(color);
         List<Move> legals = new ArrayList<>();
-        for(Move move : moves){
-            if(legalsMove.contains(move.move)){
+        for (Move move : moves) {
+            if (legalsMove.contains(move.move)) {
                 legals.add(move);
             }
         }
         //on met à jour le cache
-        cachedMoves.put(color,legals);
+        this.legalsMove = legals;
+        Cache.cachedBoard.put(fen, this);
 
     }
 
@@ -74,8 +68,19 @@ public class Board {
         Piece promoted = null;
         Piece toRemove = null;
 
-        newBoard.pieces.removeIf(p -> m.target.equals(p.square));
-        for (Piece p : newBoard.pieces) {
+        newBoard.pieces[m.from.row][m.from.col] = null;
+
+
+        if (m.move.endsWith("q")) {
+            promoted = new Queen(m.target, m.piece.color);
+            newBoard.pieces[m.target.row][m.target.col] = promoted;
+            newBoard.pieces[m.target.row][m.target.col].square = m.target;
+        } else {
+            newBoard.pieces[m.target.row][m.target.col] = m.piece;
+            newBoard.pieces[m.target.row][m.target.col].square = m.target;
+        }
+
+        /*for (Piece p : newBoard.pieces) {
             if (p.square.equals(m.piece.square)) {
                 p.square = m.target;
                 if (m.move.endsWith("q")) {
@@ -89,7 +94,7 @@ public class Board {
         if (toRemove != null && promoted != null) {
             newBoard.pieces.remove(toRemove);
             newBoard.pieces.add(promoted);
-        }
+        }*/
 
         newBoard.recalculateFenAndPutOnCache();
         return newBoard;
@@ -101,8 +106,17 @@ public class Board {
     private Board movePiece(final Move m) {
         Board newBoard = new Board(this);
         Piece promoted = null;
-        Piece toRemove = null;
-        for (Piece p : newBoard.pieces) {
+
+        if (m.move.endsWith("q")) {
+            promoted = new Queen(m.target, m.piece.color);
+            newBoard.pieces[m.target.row][m.target.col] = promoted;
+            newBoard.pieces[m.target.row][m.target.col].square = m.target;
+        } else {
+            newBoard.pieces[m.from.row][m.from.col] = null;
+            newBoard.pieces[m.target.row][m.target.col] = m.piece;
+            newBoard.pieces[m.target.row][m.target.col].square = m.target;
+        }
+        /*for (Piece p : newBoard.pieces) {
             if (p.square.equals(m.piece.square)) {
                 p.square = m.target;
                 if (m.move.endsWith("q")) {
@@ -114,7 +128,7 @@ public class Board {
         if (toRemove != null && promoted != null) {
             newBoard.pieces.remove(toRemove);
             newBoard.pieces.add(promoted);
-        }
+        }*/
 
         newBoard.recalculateFenAndPutOnCache();
         return newBoard;
@@ -130,8 +144,8 @@ public class Board {
                 newFen += "/";
             }
             for (int j = 0; j < Cache.COLS; j++) {
-                Square square = Square.of(i, j);
-                Piece piece = this.getPiece(square);
+                //Square square = Square.of(i, j);
+                Piece piece = this.pieces[i][j];
                 if (piece == null) {
                     empty++;
                 } else {
@@ -151,50 +165,41 @@ public class Board {
     }
 
     private void recalculateFenAndPutOnCache() {
-        this.cachedMoves = new HashMap<>();
-        this.cachedPieces = new HashMap<>();
         this.fen = recalculateFen();
         Cache.cachedBoard.put(this.fen, this);
     }
 
 
     public List<Piece> getPieces(Color color) {
-        if (cachedPieces.containsKey(color)) {
-            //System.err.println("used cached pieces");
-            return cachedPieces.get(color);
-        }
+
         List<Piece> colorPiece = new ArrayList<>();
-        for (Piece p : this.pieces) {
-            if (p.color.equals(color)) {
-                colorPiece.add(p);
+        for (Piece[] row : pieces) {
+            for (Piece piece : row) {
+                if (piece != null && piece.color == color) {
+                    colorPiece.add(piece);
+                }
             }
         }
-        cachedPieces.put(color, colorPiece);
+
         return colorPiece;
     }
 
     public Piece getPiece(Square square) {
-        for (Piece p : pieces) {
-            if (p.square.equals(square)) {
-                return p;
-            }
-        }
-        return null;
+        return pieces[square.row][square.col];
     }
 
 
     public List<Move> getMoves(Color color) {
-
-        if (cachedMoves.containsKey(color)) {
-            //System.err.println("used cached moves");
-            return cachedMoves.get(color);
+        if (legalsMove != null) {
+            return legalsMove;
         }
+
+
         List<Move> moves = new ArrayList<>();
         for (Piece p : this.getPieces(color)) {
             List<Move> legalsMove = p.legalsMove(this);
             moves.addAll(legalsMove);
         }
-        cachedMoves.put(color, moves);
         return moves;
     }
 
@@ -212,7 +217,7 @@ public class Board {
                 col = col + j;
             } else {
                 Piece piece = getPieceFromFenSymbol(b, Square.of(row, col));
-                pieces.add(piece);
+                pieces[row][col] = piece;
                 col++;
             }
         }
@@ -280,5 +285,17 @@ public class Board {
         score = scoreWhite - scoreBlack;
         this.score = score;
         return score;
+    }
+
+    public List<Piece> getPieces() {
+        List<Piece> allPieces = new ArrayList<>();
+        for (Piece[] row : pieces) {
+            for (Piece piece : row) {
+                if (piece != null) {
+                    allPieces.add(piece);
+                }
+            }
+        }
+        return allPieces;
     }
 }

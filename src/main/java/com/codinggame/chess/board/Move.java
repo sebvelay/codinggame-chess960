@@ -5,9 +5,11 @@ import com.codinggame.chess.board.pieces.Piece;
 import java.util.List;
 
 public class Move {
+    public final Square target;
+    public final Square from;
+
     public final boolean isTakePiece;
     public final Piece piece;
-    public final Square target;
     public final Piece takenPiece;
     public final boolean promote;
     public String move;
@@ -24,6 +26,7 @@ public class Move {
             move += "q";
         }
         this.promote = promote;
+        this.from=piece.square;
     }
 
     public Move(final Piece piece, final Square target, final boolean promote) {
@@ -36,6 +39,7 @@ public class Move {
             move += "q";
         }
         this.promote = promote;
+        this.from=piece.square;
     }
 
     public void setSimulateBoard(Board board) {
@@ -46,7 +50,7 @@ public class Move {
         //for each piece on the board
         int controlledByOpponent = 0;
         int controlledByMyself = 0;
-        for (Piece p : boardAfterMove.pieces) {
+        for (Piece p : boardAfterMove.getPieces()) {
             List<Square> controlledSquare = p.getControlledSquare(boardAfterMove);
             if (controlledSquare.contains(target)) {
                 if (p.color == piece.color) {
