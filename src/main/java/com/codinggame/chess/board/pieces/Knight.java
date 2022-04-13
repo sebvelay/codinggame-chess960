@@ -22,6 +22,31 @@ public class Knight extends Piece {
     public List<Move> legalsMove(Board board) {
         List<Move> legalMoves = new ArrayList<>();
 
+
+        for (Square s : getControlledSquare(board)) {
+            if (s.row >= 0 && s.row <= 7 && s.col >= 0 && s.col <= 7) {
+                if (board.getPiece(s) == null) {
+                    legalMoves.add(new Move(this, s, false));
+                } else if (board.getPiece(s).color != this.color) {
+                    legalMoves.add(new Move(true, this, s, board.getPiece(s), false));
+                }
+            }
+        }
+        return legalMoves;
+    }
+
+    @Override
+    public int getValue() {
+        return 3;
+    }
+
+    @Override
+    public Piece clonePiece() {
+        return new Knight(this.square, this.color);
+    }
+
+    @Override
+    public List<Square> getControlledSquare(Board board) {
         List<Square> squareList = new ArrayList<>();
 
         if (this.square.row - 1 >= 0 && this.square.col - 2 >= 0) {
@@ -56,31 +81,6 @@ public class Knight extends Piece {
             Square target8 = Square.of(this.square.row + 1, this.square.col - 2);
             squareList.add(target8);
         }
-
-        for (Square s : squareList) {
-            if (s.row >= 0 && s.row <= 7 && s.col >= 0 && s.col <= 7) {
-                if (board.getPiece(s) == null) {
-                    legalMoves.add(new Move(this, s, false));
-                } else if (board.getPiece(s).color != this.color) {
-                    legalMoves.add(new Move(true, this, s, board.getPiece(s), false));
-                }
-            }
-        }
-        return legalMoves;
-    }
-
-    @Override
-    public int getValue() {
-        return 3;
-    }
-
-    @Override
-    public Piece clonePiece() {
-        return new Knight(this.square, this.color);
-    }
-
-    @Override
-    public List<Square> getControlledSquare(Board board) {
-        return new ArrayList<>();
+        return squareList;
     }
 }

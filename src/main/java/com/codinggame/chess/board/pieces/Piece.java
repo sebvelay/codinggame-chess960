@@ -52,10 +52,8 @@ public abstract class Piece {
             Square right = Square.of(currentX, i);
             if (board.getPiece(right) == null) {
                 squares.add(right);
-            } else if (board.getPiece(right).color != this.color) {
-                squares.add(right);
-                break;
             } else {
+                squares.add(right);
                 break;
             }
         }
@@ -66,10 +64,9 @@ public abstract class Piece {
             Square left = Square.of(currentX, i);
             if (board.getPiece(left) == null) {
                 squares.add(left);
-            } else if (board.getPiece(left).color != this.color) {
-                squares.add(left);
-                break;
             } else {
+                squares.add(left);
+
                 break;
             }
         }
@@ -79,10 +76,8 @@ public abstract class Piece {
             Square up = Square.of(i, currentY);
             if (board.getPiece(up) == null) {
                 squares.add(up);
-            } else if (board.getPiece(up).color != this.color) {
-                squares.add(up);
-                break;
             } else {
+                squares.add(up);
                 break;
             }
         }
@@ -93,10 +88,10 @@ public abstract class Piece {
             Square bottom = Square.of(i, currentY);
             if (board.getPiece(bottom) == null) {
                 squares.add(bottom);
-            } else if (board.getPiece(bottom).color != this.color) {
-                squares.add(bottom);
-                break;
+
             } else {
+                squares.add(bottom);
+
                 break;
             }
         }
@@ -119,10 +114,8 @@ public abstract class Piece {
             Square square = Square.of(x, y);
             if (board.getPiece(square) == null) {
                 squares.add(square);
-            } else if (board.getPiece(square).color != this.color) {
-                squares.add(square);
-                break;
             } else {
+                squares.add(square);
                 break;
             }
             x--;
@@ -137,10 +130,8 @@ public abstract class Piece {
             Square square = Square.of(x, y);
             if (board.getPiece(square) == null) {
                 squares.add(square);
-            } else if (board.getPiece(square).color != this.color) {
-                squares.add(square);
-                break;
             } else {
+                squares.add(square);
                 break;
             }
             x--;
@@ -155,10 +146,9 @@ public abstract class Piece {
             Square square = Square.of(x, y);
             if (board.getPiece(square) == null) {
                 squares.add(square);
-            } else if (board.getPiece(square).color != this.color) {
-                squares.add(square);
-                break;
+
             } else {
+                squares.add(square);
                 break;
             }
             x++;
@@ -173,10 +163,9 @@ public abstract class Piece {
             Square square = Square.of(x, y);
             if (board.getPiece(square) == null) {
                 squares.add(square);
-            } else if (board.getPiece(square).color != this.color) {
-                squares.add(square);
-                break;
+
             } else {
+                squares.add(square);
                 break;
             }
             x++;

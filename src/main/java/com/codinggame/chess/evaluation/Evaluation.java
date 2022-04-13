@@ -4,9 +4,7 @@ import com.codinggame.chess.Chrono;
 import com.codinggame.chess.Constant;
 import com.codinggame.chess.board.Board;
 import com.codinggame.chess.board.Move;
-import com.codinggame.chess.board.Square;
 import com.codinggame.chess.board.pieces.Color;
-import com.codinggame.chess.board.pieces.Piece;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +17,9 @@ public class Evaluation {
 
     public Evaluation(Board board, Color color, Color currentPlayer, int deep) {
         this.color = color;
-        for (Move m : board.getMoves(color)) {
+        List<Move> moves = board.getMoves(color);
+
+        for (Move m : moves) {
             if (isPanic()) {
                 System.err.println("panic on create node after : " + Chrono.elapsedTime() + " tot eval = " + totEvaluation);
                 return;
@@ -31,8 +31,12 @@ public class Evaluation {
             }
             int score = newBoard.getScore();
 
-            //HACK POUR NE PAS DONNER LA QUEEN
-            //si on a une piece sur une case controllé, on peut considérer qu'elle va être prise
+            //HACK POUR NE PAS DONNER de pièce en 1
+            //si on a une piece sur une case controllé qu'on controle moins de fois, on peut considérer qu'elle va être prise
+
+            /*if(m.move.equals("f3f5")){
+                System.err.println("f3f5");
+            }
             Color opponent = color.equals(Color.white) ? Color.black : Color.white;
             List<String> controlledByOpponent = new ArrayList<>();
             for (Piece piece : newBoard.getPieces(opponent)) {
@@ -40,11 +44,19 @@ public class Evaluation {
                     controlledByOpponent.add(s.translate);
                 }
             }
+
             for (Piece piece : newBoard.getPieces(color)) {
                 if (controlledByOpponent.contains(piece.square.translate)) {
-                    score = -(piece.getValue() * 1000);
+                    score = score - (piece.getValue() * 1000);
                 }
-            }
+            }*/
+
+            /*if(m.move.equals("f3f6")){
+                System.err.println("here");
+            }*/
+            /*if (!m.isSafeMove()) {
+                score = score - (m.piece.getValue() * 1000);
+            }*/
 
             //FIN HACK
 
@@ -59,12 +71,15 @@ public class Evaluation {
             nodes.add(new Node(m, score, newBoard, color));
 
         }
-        System.err.println("perform all moves on "+Chrono.elapsedTime());
+        System.err.println("perform all moves on " + Chrono.elapsedTime());
 
         for (Node node : nodes) {
             if (isPanic()) {
                 System.err.println("panic on Evaluation deeper" + Chrono.elapsedTime() + " tot eval = " + totEvaluation);
                 return;
+            }
+            if(node.move.move.equals("d3d6")){
+                System.err.println("here");
             }
             deep(deep, node, color);
         }

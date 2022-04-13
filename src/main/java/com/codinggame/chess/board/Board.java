@@ -62,6 +62,7 @@ public class Board {
         } else {
             newBoard = this.movePiece(m);
         }
+        m.setSimulateBoard(newBoard);
         return newBoard;
     }
 

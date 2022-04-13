@@ -62,6 +62,6 @@ public class RookTest {
         List<Square> controlledSquare = rook.getControlledSquare(board);
 
 
-        assertEquals(4, controlledSquare.size());
+        assertEquals(6, controlledSquare.size());
     }
 }

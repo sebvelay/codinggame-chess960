@@ -26,7 +26,7 @@ class QueenTakeTest {
 
     @Test
     void shouldTakePawn() {
-        Constant.DEEPER = 0;
+        Constant.DEEPER = 3;
         Constant.DEBUG_EVAL = true;
         Board board = new Board("8/2p5/3r4/5p2/8/3Q4/8/8");
 

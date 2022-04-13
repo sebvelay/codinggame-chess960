@@ -43,4 +43,25 @@ class QueenTest {
 
         assertEquals(23, controlledSquare.size());
     }
+
+    @Test
+    void whiteQueenControleSquareWhereRookOnHere(){
+        Board board = new Board("k1r5/1Rp3pp/Q3pn2/p1b2p2/8/4P2P/5qPB/K7");
+        Piece queen = board.getPiece(Square.of("a6"));
+        List<String> controlledSquare = queen.getControlledSquare(board).stream().map(s->s.translate).collect(Collectors.toList());
+
+        assertTrue(controlledSquare.contains("b7"));
+    }
+
+    @Test
+    void whiteQueenControleSquareWhereBishopOnHere(){
+        Board board = new Board("k1r5/1Rp3pp/QB2pn2/p1b2p2/8/4P2P/5qPB/K7");
+        Piece queen = board.getPiece(Square.of("a6"));
+        List<String> controlledSquare = queen.getControlledSquare(board).stream().map(s->s.translate).collect(Collectors.toList());
+
+        assertTrue(controlledSquare.contains("b6"));
+    }
+
+
+
 }

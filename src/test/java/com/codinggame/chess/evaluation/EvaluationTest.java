@@ -5,17 +5,13 @@ import com.codinggame.chess.Constant;
 import com.codinggame.chess.board.Board;
 import com.codinggame.chess.board.Move;
 import com.codinggame.chess.board.pieces.Color;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 class EvaluationTest {
 
@@ -24,6 +20,8 @@ class EvaluationTest {
     @BeforeEach
     void setUp() {
         Chrono.start = System.currentTimeMillis() + 1000000;
+        Constant.DEEPER = 3;
+        Constant.DEBUG_EVAL=true;
 
     }
 
@@ -114,7 +112,7 @@ class EvaluationTest {
 
     @Test
     void blackShouldTake() {
-        Constant.DEBUG_EVAL=true;
+        Constant.DEBUG_EVAL = true;
         board = new Board("8/8/8/3q4/8/3Q4/8/7P");
 
         Evaluation evaluation = new Evaluation(board, Color.black, Color.black, Constant.DEEPER);
@@ -188,8 +186,8 @@ class EvaluationTest {
     }
 
     @Test
-    void bugQueenSacrificeWhite(){
-        Constant.DEBUG_EVAL=true;
+    void bugQueenSacrificeWhite() {
+        Constant.DEBUG_EVAL = true;
         board = new Board("qn2bbkr/ppp1pppp/3r4/8/1PP1pnPP/N7/P7/Q1RNBBKR");
 
         Evaluation evaluation = new Evaluation(board, Color.white, Color.white, Constant.DEEPER);
@@ -201,8 +199,8 @@ class EvaluationTest {
     }
 
     @Test
-    void bugQueenSacrificeWhiteSimplified(){
-        Constant.DEBUG_EVAL=true;
+    void bugQueenSacrificeWhiteSimplified() {
+        Constant.DEBUG_EVAL = true;
         board = new Board("6kq/6p1/8/8/8/8/P7/QK6");
 
         Evaluation evaluation = new Evaluation(board, Color.white, Color.white, Constant.DEEPER);
@@ -242,7 +240,7 @@ class EvaluationTest {
     @Test
     void shouldTakeBishop() {
         Constant.DEBUG_EVAL = true;
-        Constant.DEEPER=1;
+        Constant.DEEPER = 1;
         board = new Board("nqr1k1br/pppp1pQ1/6np/8/2P5/b7/1P1PPPPP/N1RBKNBR");
         Evaluation evaluation = new Evaluation(board, Color.white, Color.white, Constant.DEEPER);
 
@@ -269,17 +267,18 @@ class EvaluationTest {
     }
 
     @Test
-    void evaluationShouldCreateNodeForPlayer(){
+    void evaluationShouldCreateNodeForPlayer() {
         Board board = new Board("8/8/8/8/8/3P4/2P5/8");
-        Evaluation evaluation = new Evaluation(board,Color.white,Color.white,Constant.DEEPER);
-        assertEquals(3,evaluation.nodes.size());
+        Evaluation evaluation = new Evaluation(board, Color.white, Color.white, Constant.DEEPER);
+        assertEquals(3, evaluation.nodes.size());
     }
 
     @Test
-    void evaluationShouldCreateNodeForOtherPlayer(){
+    void evaluationShouldCreateNodeForOtherPlayer() {
+        Constant.DEEPER = 1;
         Board board = new Board("8/8/8/2p5/8/3P4/2P5/8");
-        Evaluation evaluation = new Evaluation(board,Color.white,Color.white,Constant.DEEPER);
-        assertEquals(3,evaluation.nodes.size());
+        Evaluation evaluation = new Evaluation(board, Color.white, Color.white, Constant.DEEPER);
+        assertEquals(3, evaluation.nodes.size());
 
         Node d3d4 = evaluation.nodes.stream().filter(n -> n.move.move.equals("d3d4")).findFirst().get();
 
@@ -292,17 +291,37 @@ class EvaluationTest {
     }
 
     @Test
-    void evaluationShouldOnlyCreateNodeForOpponentWhenTakePiece(){
+    void evaluationShouldOnlyCreateNodeForOpponentWhenTakePiece() {
         Board board = new Board("brkqnrnb/pppppppp/8/8/8/8/PPPPPPPP/BRKQNRNB");
-        Evaluation evaluation = new Evaluation(board,Color.white,Color.white,Constant.DEEPER);
-        assertEquals(20,evaluation.nodes.size());
+        Evaluation evaluation = new Evaluation(board, Color.white, Color.white, Constant.DEEPER);
+        assertEquals(20, evaluation.nodes.size());
 
         List<Node> childsNode = evaluation.nodes.stream()
                 .flatMap(n -> n.getChilds().stream())
                 .collect(Collectors.toList());
 
-        assertEquals(0,childsNode.size());
+        assertEquals(0, childsNode.size());
 
+    }
+
+    @Test
+    void shouldTakePawnAndCheck() {
+        Constant.DEEPER = 0;
+        Constant.DEBUG_EVAL=true;
+        Board board = new Board("bqn2r1r/ppp1nk2/5p2/4Q2p/4P3/2P2R2/PP4PP/B1NB1KNR");
+        Evaluation evaluation = new Evaluation(board, Color.white, Color.white, Constant.DEEPER);
+        Node best = evaluation.getBest();
+        assertEquals("f3f6", best.move.move);
+    }
+
+    @Test
+    void shouldTakeQueenOn1(){
+        Constant.DEEPER = 0;
+        Constant.DEBUG_EVAL=true;
+        Board board = new Board("3q2b1/r1k2p2/2p2P2/2P1P3/4Npp1/2K5/1P3NP1/3R4");
+        Evaluation evaluation = new Evaluation(board, Color.white, Color.white, Constant.DEEPER);
+        Node best = evaluation.getBest();
+        assertEquals("d1d8", best.move.move);
     }
 
 }
