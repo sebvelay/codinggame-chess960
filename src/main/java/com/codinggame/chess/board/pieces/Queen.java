@@ -9,8 +9,8 @@ import java.util.List;
 
 public class Queen extends Piece {
 
-    public Queen(final Square square, Color color) {
-        super(square, color);
+    public Queen(Color color) {
+        super(color);
         if (color.equals(Color.black)) {
             this.notation = "q";
         } else {
@@ -19,23 +19,18 @@ public class Queen extends Piece {
     }
 
     @Override
-    public Piece clonePiece() {
-        return new Queen(this.square, this.color);
-    }
-
-    @Override
-    public List<Square> getControlledSquare(Board board) {
+    public List<Square> getControlledSquare(Board board, Square from) {
         List<Square> squares = new ArrayList<>();
-        squares.addAll(this.getSquaresInLine(board));
-        squares.addAll(this.getSquareInDiagognale(board));
+        squares.addAll(this.getSquaresInLine(board,from));
+        squares.addAll(this.getSquareInDiagognale(board,from));
 
         return squares;
     }
 
     @Override
-    public List<Move> legalsMove(Board board) {
-        List<Move> legalMoves1 = getMovesInDiagognale(board);
-        List<Move> legalMoves2 = getMovesInLine(board);
+    public List<Move> legalsMove(Board board,Square from) {
+        List<Move> legalMoves1 = getMovesInDiagognale(board,from);
+        List<Move> legalMoves2 = getMovesInLine(board,from);
         legalMoves1.addAll(legalMoves2);
         return legalMoves1;
     }

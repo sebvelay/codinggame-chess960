@@ -5,47 +5,44 @@ import com.codinggame.chess.board.Move;
 import com.codinggame.chess.board.Square;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public abstract class Piece {
     public final Color color;
-    public Square square;
-    public Map<Board, List<Move>> cachedMoves = new HashMap<>();
     public String notation;
 
-    public Piece(Square square, Color color) {
-        this.square = square;
+    public Piece(Color color) {
         this.color = color;
     }
 
-    public abstract List<Move> legalsMove(Board board);
+    public abstract List<Move> legalsMove(Board board, Square from);
 
     public abstract int getValue();
 
-    public abstract Piece clonePiece();
-
-    public List<Move> getMovesInLine(final Board board) {
+    public List<Move> getMovesInLine(final Board board, Square from) {
         List<Move> legalsMove = new ArrayList<>();
 
-        List<Square> squaresInLine = getSquaresInLine(board);
+        List<Square> squaresInLine = getSquaresInLine(board, from);
         for (Square square : squaresInLine) {
             if (board.getPiece(square) == null) {
-                legalsMove.add(new Move(this, square, false));
+                legalsMove.add(new Move(this, from, square, false));
             } else if (board.getPiece(square).color != this.color) {
-                legalsMove.add(new Move(true, this, square, board.getPiece(square), false));
+                legalsMove.add(new Move(true, this, from, square, board.getPiece(square), false));
             }
         }
 
         return legalsMove;
     }
 
-    List<Square> getSquaresInLine(Board board) {
+    List<Square> getSquaresInLine(Board board, Square from) {
         List<Square> squares = new ArrayList<>();
+        Color myColor = board.pieces[from.row][from.col].color;
 
-        int currentX = this.square.row;
-        int currentY = this.square.col;
+        int currentX = from.row;
+        int currentY = from.col;
+
+
+
 
         //sur la droite
         for (int i = currentY + 1; i < 8; i++) {
@@ -58,7 +55,7 @@ public abstract class Piece {
             }
         }
 
-        //sur la gauche
+
 
         for (int i = currentY - 1; i >= 0; i--) {
             Square left = Square.of(currentX, i);
@@ -100,11 +97,11 @@ public abstract class Piece {
         return squares;
     }
 
-    List<Square> getSquareInDiagognale(final Board board) {
+    List<Square> getSquareInDiagognale(final Board board, Square from) {
         List<Square> squares = new ArrayList<>();
 
-        int currentX = this.square.row;
-        int currentY = this.square.col;
+        int currentX = from.row;
+        int currentY = from.col;
         //en haut à gauche
 
         int x = currentX - 1;
@@ -174,19 +171,19 @@ public abstract class Piece {
         return squares;
     }
 
-    public List<Move> getMovesInDiagognale(final Board board) {
+    public List<Move> getMovesInDiagognale(final Board board, Square from) {
         List<Move> legalMoves = new ArrayList<>();
 
-        List<Square> squareInDiagognale = getSquareInDiagognale(board);
+        List<Square> squareInDiagognale = getSquareInDiagognale(board, from);
         for (Square square : squareInDiagognale) {
             if (board.getPiece(square) == null) {
-                legalMoves.add(new Move(this, square, false));
+                legalMoves.add(new Move(this, from, square, false));
             } else if (board.getPiece(square).color != this.color) {
-                legalMoves.add(new Move(true, this, square, board.getPiece(square), false));
+                legalMoves.add(new Move(true, this, from, square, board.getPiece(square), false));
             }
         }
         return legalMoves;
     }
 
-    public abstract List<Square> getControlledSquare(Board board);
+    public abstract List<Square> getControlledSquare(Board board, Square from);
 }

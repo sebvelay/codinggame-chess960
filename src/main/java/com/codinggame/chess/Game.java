@@ -12,10 +12,12 @@ import java.util.List;
 public class Game {
 
     public static int turn = 0;
+    public static Color currentPlayer=null;
 
     public void play(String fen, String color, List<String> legalMovesFromGame) {
         turn++;
         Color myColor = color.equals("w") ? Color.white : Color.black;
+        Game.currentPlayer = myColor;
         Board board = new Board(fen, legalMovesFromGame, myColor);
         Cache.cachedBoard = new HashMap<>();
         Cache.cachedBoard.put(fen, board);

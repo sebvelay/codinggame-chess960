@@ -4,13 +4,12 @@ import com.codinggame.chess.board.Board;
 import com.codinggame.chess.board.Move;
 import com.codinggame.chess.board.Square;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Rook extends Piece {
 
-    public Rook(final Square square, Color color) {
-        super(square, color);
+    public Rook(Color color) {
+        super(color);
         if (color.equals(Color.black)) {
             this.notation = "r";
         } else {
@@ -20,9 +19,9 @@ public class Rook extends Piece {
 
 
     @Override
-    public List<Move> legalsMove(Board board) {
+    public List<Move> legalsMove(Board board, Square from) {
 
-        return getMovesInLine(board);
+        return getMovesInLine(board, from);
     }
 
     @Override
@@ -31,12 +30,7 @@ public class Rook extends Piece {
     }
 
     @Override
-    public Piece clonePiece() {
-        return new Rook(this.square, this.color);
-    }
-
-    @Override
-    public List<Square> getControlledSquare(Board board) {
-        return getSquaresInLine(board);
+    public List<Square> getControlledSquare(Board board, Square from) {
+        return getSquaresInLine(board, from);
     }
 }

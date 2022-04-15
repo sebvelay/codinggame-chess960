@@ -2,6 +2,7 @@ package com.codinggame.chess.evaluation;
 
 import com.codinggame.chess.Chrono;
 import com.codinggame.chess.Constant;
+import com.codinggame.chess.Game;
 import com.codinggame.chess.board.Board;
 import com.codinggame.chess.board.Move;
 import com.codinggame.chess.board.pieces.Color;
@@ -20,6 +21,7 @@ class EvaluationNodeBestTest {
     @BeforeEach
     void setUp() {
         Chrono.start=System.currentTimeMillis()+1000000;
+        Game.currentPlayer=Color.white;
 
     }
 

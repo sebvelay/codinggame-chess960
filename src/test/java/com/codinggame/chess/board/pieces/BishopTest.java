@@ -19,7 +19,7 @@ public class BishopTest {
         Piece d3 = board.getPiece(d3Square);
         List<String> expected = Arrays.asList("b1", "c2", "e4", "f5", "g6", "h7", "f1", "e2", "c4", "b5", "a6");
 
-        List<String> collect = d3.getControlledSquare(board).stream().map(s -> s.translate).collect(Collectors.toList());
+        List<String> collect = d3.getControlledSquare(board,d3Square).stream().map(s -> s.translate).collect(Collectors.toList());
 
         Assertions.assertTrue(collect.containsAll(expected));
         Assertions.assertTrue(expected.containsAll(collect));

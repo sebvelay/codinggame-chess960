@@ -16,30 +16,30 @@ public class Move {
     public boolean isCheck = false;
     public Board boardAfterMove;
 
-    public Move(final boolean isTakePiece, final Piece piece, final Square target, final Piece takenPiece, final boolean promote) {
+    public Move(final boolean isTakePiece, final Piece piece, final Square from, final Square target, final Piece takenPiece, final boolean promote) {
         this.isTakePiece = isTakePiece;
         this.target = target;
         this.piece = piece;
         this.takenPiece = takenPiece;
-        this.move = piece.square.translate + target.translate;
+        this.move = from.translate + target.translate;
         if (promote) {
             move += "q";
         }
         this.promote = promote;
-        this.from=piece.square;
+        this.from = from;
     }
 
-    public Move(final Piece piece, final Square target, final boolean promote) {
+    public Move(final Piece piece, final Square from, final Square target, final boolean promote) {
         this.isTakePiece = false;
         this.takenPiece = null;
         this.target = target;
         this.piece = piece;
-        this.move = piece.square.translate + target.translate;
+        this.move = from.translate + target.translate;
         if (promote) {
             move += "q";
         }
         this.promote = promote;
-        this.from=piece.square;
+        this.from = from;
     }
 
     public void setSimulateBoard(Board board) {
@@ -51,7 +51,7 @@ public class Move {
         int controlledByOpponent = 0;
         int controlledByMyself = 0;
         for (Piece p : boardAfterMove.getPieces()) {
-            List<Square> controlledSquare = p.getControlledSquare(boardAfterMove);
+            List<Square> controlledSquare = p.getControlledSquare(boardAfterMove, this.from);
             if (controlledSquare.contains(target)) {
                 if (p.color == piece.color) {
                     controlledByMyself++;

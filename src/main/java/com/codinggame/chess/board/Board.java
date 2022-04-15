@@ -1,11 +1,9 @@
 package com.codinggame.chess.board;
 
 import com.codinggame.chess.Cache;
+import com.codinggame.chess.Game;
 import com.codinggame.chess.board.pieces.*;
-import com.codinggame.chess.board.score.CheckScore;
 import com.codinggame.chess.board.score.MaterialScore;
-import com.codinggame.chess.board.score.PositionScore;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,8 +11,12 @@ public class Board {
 
     public String fen;
     public Integer score = null;
-    private Piece[][] pieces = new Piece[8][8];
+    public Piece[][] pieces = new Piece[8][8];
     private List<Move> legalsMove = null;
+    private Color legalMoveForColor = null;
+    private List<Move> movesForWhite = null;
+    private List<Move> movesForBlack = null;
+
 
     private Board() {
 
@@ -45,6 +47,7 @@ public class Board {
         }
         //on met à jour le cache
         this.legalsMove = legals;
+        this.legalMoveForColor = color;
         Cache.cachedBoard.put(fen, this);
 
     }
@@ -72,29 +75,11 @@ public class Board {
 
 
         if (m.move.endsWith("q")) {
-            promoted = new Queen(m.target, m.piece.color);
+            promoted = new Queen(m.piece.color);
             newBoard.pieces[m.target.row][m.target.col] = promoted;
-            newBoard.pieces[m.target.row][m.target.col].square = m.target;
         } else {
             newBoard.pieces[m.target.row][m.target.col] = m.piece;
-            newBoard.pieces[m.target.row][m.target.col].square = m.target;
         }
-
-        /*for (Piece p : newBoard.pieces) {
-            if (p.square.equals(m.piece.square)) {
-                p.square = m.target;
-                if (m.move.endsWith("q")) {
-                    promoted = new Queen(p.square, p.color);
-                    toRemove = p;
-                }
-                break;
-            }
-        }
-
-        if (toRemove != null && promoted != null) {
-            newBoard.pieces.remove(toRemove);
-            newBoard.pieces.add(promoted);
-        }*/
 
         newBoard.recalculateFenAndPutOnCache();
         return newBoard;
@@ -108,28 +93,12 @@ public class Board {
         Piece promoted = null;
 
         if (m.move.endsWith("q")) {
-            promoted = new Queen(m.target, m.piece.color);
+            promoted = new Queen(m.piece.color);
             newBoard.pieces[m.target.row][m.target.col] = promoted;
-            newBoard.pieces[m.target.row][m.target.col].square = m.target;
         } else {
             newBoard.pieces[m.from.row][m.from.col] = null;
             newBoard.pieces[m.target.row][m.target.col] = m.piece;
-            newBoard.pieces[m.target.row][m.target.col].square = m.target;
         }
-        /*for (Piece p : newBoard.pieces) {
-            if (p.square.equals(m.piece.square)) {
-                p.square = m.target;
-                if (m.move.endsWith("q")) {
-                    promoted = new Queen(p.square, p.color);
-                    toRemove = p;
-                }
-            }
-        }
-        if (toRemove != null && promoted != null) {
-            newBoard.pieces.remove(toRemove);
-            newBoard.pieces.add(promoted);
-        }*/
-
         newBoard.recalculateFenAndPutOnCache();
         return newBoard;
 
@@ -190,16 +159,35 @@ public class Board {
 
 
     public List<Move> getMoves(Color color) {
-        if (legalsMove != null) {
+        if (legalsMove != null && color == this.legalMoveForColor) {
             return legalsMove;
+        }
+        if (movesForWhite != null && color == Color.white) {
+            return movesForWhite;
+        }
+        if (movesForBlack != null && color == Color.black) {
+            return movesForBlack;
         }
 
 
         List<Move> moves = new ArrayList<>();
-        for (Piece p : this.getPieces(color)) {
-            List<Move> legalsMove = p.legalsMove(this);
-            moves.addAll(legalsMove);
+        for (int i = 0; i < Cache.ROWS; i++) {
+            for (int j = 0; j < Cache.COLS; j++) {
+                Piece piece = pieces[i][j];
+                if (piece != null && piece.color == color) {
+                    moves.addAll(piece.legalsMove(this, Square.of(i, j)));
+                }
+            }
         }
+
+        if (color == Color.white) {
+            movesForWhite = moves;
+        }
+
+        if (color == Color.black) {
+            movesForBlack = moves;
+        }
+
         return moves;
     }
 
@@ -226,29 +214,29 @@ public class Board {
     Piece getPieceFromFenSymbol(char f, Square currentSquare) {
         Piece piece = null;
         if (f == 'r') {
-            piece = new Rook(currentSquare, Color.black);
+            piece = new Rook(Color.black);
         } else if (f == 'R') {
-            piece = new Rook(currentSquare, Color.white);
+            piece = new Rook(Color.white);
         } else if (f == 'k') {
-            piece = new King(currentSquare, Color.black);
+            piece = new King(Color.black);
         } else if (f == 'K') {
-            piece = new King(currentSquare, Color.white);
+            piece = new King(Color.white);
         } else if (f == 'B') {
-            piece = new Bishop(currentSquare, Color.white);
+            piece = new Bishop(Color.white);
         } else if (f == 'b') {
-            piece = new Bishop(currentSquare, Color.black);
+            piece = new Bishop(Color.black);
         } else if (f == 'Q') {
-            piece = new Queen(currentSquare, Color.white);
+            piece = new Queen(Color.white);
         } else if (f == 'q') {
-            piece = new Queen(currentSquare, Color.black);
+            piece = new Queen(Color.black);
         } else if (f == 'n') {
-            piece = new Knight(currentSquare, Color.black);
+            piece = new Knight(Color.black);
         } else if (f == 'N') {
-            piece = new Knight(currentSquare, Color.white);
+            piece = new Knight(Color.white);
         } else if (f == 'P') {
-            piece = new Pawn(currentSquare, Color.white);
+            piece = new Pawn(Color.white);
         } else if (f == 'p') {
-            piece = new Pawn(currentSquare, Color.black);
+            piece = new Pawn(Color.black);
         }
         return piece;
     }
@@ -269,20 +257,21 @@ public class Board {
     }
 
     public int getScore() {
-        if (score != null) {
-            return score;
-        }
 
         int scoreWhite = MaterialScore.evaluate(this, Color.white);
         int scoreBlack = MaterialScore.evaluate(this, Color.black);
-        scoreWhite += PositionScore.evaluate(this, Color.white);
-        scoreBlack += PositionScore.evaluate(this, Color.black);
-        scoreWhite += CheckScore.evaluate(this, Color.white);
-        scoreBlack += CheckScore.evaluate(this, Color.black);
+        /*scoreWhite += PositionScore.evaluate(this, Color.white);
+        scoreBlack += PositionScore.evaluate(this, Color.black);*/
+        /*scoreWhite += CheckScore.evaluate(this, Color.white);
+        scoreBlack += CheckScore.evaluate(this, Color.black);*/
         int score = 0;
 
 
         score = scoreWhite - scoreBlack;
+        if(Game.currentPlayer == Color.black){
+            score = -score;
+        }
+
         this.score = score;
         return score;
     }

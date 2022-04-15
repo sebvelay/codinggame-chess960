@@ -2,6 +2,7 @@ package com.codinggame.chess.evaluation;
 
 import com.codinggame.chess.Chrono;
 import com.codinggame.chess.Constant;
+import com.codinggame.chess.Game;
 import com.codinggame.chess.board.Board;
 import com.codinggame.chess.board.Move;
 import com.codinggame.chess.board.pieces.Color;
@@ -22,6 +23,7 @@ class EvaluationTest {
         Chrono.start = System.currentTimeMillis() + 1000000;
         Constant.DEEPER = 3;
         Constant.DEBUG_EVAL=true;
+        Game.currentPlayer= Color.white;
 
     }
 
@@ -38,11 +40,6 @@ class EvaluationTest {
     @Test
     void shouldEvaluateWithDeep2() {
         board = new Board("8/8/2q5/3p4/2P5/2Q5/8/8");
-
-        List<Move> moves = board.getPieces(Color.white)
-                .stream()
-                .flatMap(p -> p.legalsMove(board).stream())
-                .collect(Collectors.toList());
 
         Evaluation evaluation = new Evaluation(board, Color.white, Color.white, Constant.DEEPER);
         Node best = evaluation.getBest();
@@ -113,6 +110,7 @@ class EvaluationTest {
     @Test
     void blackShouldTake() {
         Constant.DEBUG_EVAL = true;
+        Game.currentPlayer= Color.black;
         board = new Board("8/8/8/3q4/8/3Q4/8/7P");
 
         Evaluation evaluation = new Evaluation(board, Color.black, Color.black, Constant.DEEPER);
@@ -255,7 +253,7 @@ class EvaluationTest {
     void shouldTakePawn2() {
 
         Constant.DEBUG_EVAL = true;
-        Constant.DEEPER = 2;
+        Constant.DEEPER = 1;
         board = new Board("1q3rk1/5ppp/1n6/2p5/8/8/5B1P/Q5K1");
 
         Evaluation evaluation = new Evaluation(board, Color.white, Color.white, Constant.DEEPER);

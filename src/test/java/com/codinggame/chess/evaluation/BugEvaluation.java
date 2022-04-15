@@ -16,7 +16,8 @@ class BugEvaluation {
 
     @BeforeEach
     void setUp() {
-
+        Constant.DEEPER=3;
+        Constant.DEBUG_EVAL=true;
         Chrono.start = System.currentTimeMillis() + 10000;
 
     }
@@ -52,6 +53,15 @@ class BugEvaluation {
         Node best = evaluation.getBest();
         System.err.println(best.move.move);
         assertNotEquals("d4d5",best.move.move);
+    }
+
+    @Test
+    void bugEvaluation4(){
+        Board board = new Board("nrkn3Q/p1pp1b2/4pP2/4P3/8/8/qNB2P1P/NRK1B2R");
+        Evaluation evaluation = new Evaluation(board, Color.white,Color.white,Constant.DEEPER);
+        Node best = evaluation.getBest();
+        System.err.println(best.move.move);
+        assertNotEquals("h8d8",best.move.move);
     }
 
 

@@ -22,7 +22,7 @@ public class RookTest {
 
         Piece rook = board.getPiece(Square.of("b7"));
 
-        List<Move> moveList = rook.legalsMove(board);
+        List<Move> moveList = rook.legalsMove(board,Square.of("b7"));
 
         List<String> collect = moveList.stream().map(m -> m.target)
                 .map(s -> s.translate)
@@ -40,7 +40,7 @@ public class RookTest {
 
         Piece rook = board.getPiece(Square.of("c4"));
 
-        List<Move> moveList = rook.legalsMove(board);
+        List<Move> moveList = rook.legalsMove(board,Square.of("c4"));
 
 
         List<String> collect = moveList.stream().map(m -> m.target)
@@ -59,7 +59,7 @@ public class RookTest {
         Board board = new Board("k2RP3/2R1P3/2P1P3/3P4/8/8/8/8");
         Piece rook = board.getPiece(Square.of("c7"));
 
-        List<Square> controlledSquare = rook.getControlledSquare(board);
+        List<Square> controlledSquare = rook.getControlledSquare(board,Square.of("c7"));
 
 
         assertEquals(6, controlledSquare.size());

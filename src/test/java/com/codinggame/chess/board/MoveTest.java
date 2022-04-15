@@ -9,11 +9,11 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class MoveTest {
 
     @Test
-    void isSafeMoveIsKingCanTakeButAlsoControlledByMe(){
+    void isSafeMoveIsKingCanTakeButAlsoControlledByMe() {
         Board board = new Board("bqn2r1r/ppp1nk2/5p2/4Q2p/4P3/2P2R2/PP4PP/B1NB1KNR");
         Piece rook = board.getPiece(Square.of("f3"));
         Piece pawn = board.getPiece(Square.of("f6"));
-        Move move = new Move(true,rook,Square.of("f6"),pawn,false);
+        Move move = new Move(true, rook, Square.of("f3"), Square.of("f6"), pawn, false);
         move.setSimulateBoard(board);
 
         boolean safeMove = move.isSafeMove();
@@ -22,10 +22,10 @@ class MoveTest {
     }
 
     @Test
-    void isSafeMoveIfCantakeMeBack(){
+    void isSafeMoveIfCantakeMeBack() {
         Board board = new Board("8/8/8/2p5/8/3R4/8/8");
         Piece rook = board.getPiece(Square.of("d3"));
-        Move move = new Move(rook,Square.of("d5"),false);
+        Move move = new Move(rook, Square.of("d3"), Square.of("d5"), false);
         move.setSimulateBoard(board);
 
         boolean safeMove = move.isSafeMove();
@@ -34,10 +34,10 @@ class MoveTest {
     }
 
     @Test
-    void isNotSafeICanBeTake(){
+    void isNotSafeICanBeTake() {
         Board board = new Board("8/8/8/2p5/8/3R4/8/8");
         Piece rook = board.getPiece(Square.of("d3"));
-        Move move = new Move(rook,Square.of("d4"),false);
+        Move move = new Move(rook, Square.of("d3"), Square.of("d4"), false);
         move.setSimulateBoard(board);
 
         boolean safeMove = move.isSafeMove();
@@ -46,12 +46,12 @@ class MoveTest {
     }
 
     @Test
-    void isNotSafeCauseOfKing(){
+    void isNotSafeCauseOfKing() {
         Board board = new Board("8/3k4/3r4/8/8/3Q4/8/8");
         Piece queen = board.getPiece(Square.of("d3"));
         Piece rook = board.getPiece(Square.of("d6"));
 
-        Move move = new Move(true,queen,Square.of("d6"),rook,false);
+        Move move = new Move(true, queen, Square.of("d3"), Square.of("d6"), rook, false);
         move.setSimulateBoard(board);
 
         boolean safeMove = move.isSafeMove();

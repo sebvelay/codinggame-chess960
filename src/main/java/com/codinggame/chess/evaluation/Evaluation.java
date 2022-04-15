@@ -2,6 +2,7 @@ package com.codinggame.chess.evaluation;
 
 import com.codinggame.chess.Chrono;
 import com.codinggame.chess.Constant;
+import com.codinggame.chess.Game;
 import com.codinggame.chess.board.Board;
 import com.codinggame.chess.board.Move;
 import com.codinggame.chess.board.pieces.Color;
@@ -29,46 +30,8 @@ public class Evaluation {
                 System.err.println("panic after generate board : " + Chrono.elapsedTime() + " tot eval = " + totEvaluation);
                 return;
             }
-            int score = newBoard.getScore();
-
-            //HACK POUR NE PAS DONNER de pièce en 1
-            //si on a une piece sur une case controllé qu'on controle moins de fois, on peut considérer qu'elle va être prise
-
-            /*if(m.move.equals("f3f5")){
-                System.err.println("f3f5");
-            }
-            Color opponent = color.equals(Color.white) ? Color.black : Color.white;
-            List<String> controlledByOpponent = new ArrayList<>();
-            for (Piece piece : newBoard.getPieces(opponent)) {
-                for (Square s : piece.getControlledSquare(newBoard)) {
-                    controlledByOpponent.add(s.translate);
-                }
-            }
-
-            for (Piece piece : newBoard.getPieces(color)) {
-                if (controlledByOpponent.contains(piece.square.translate)) {
-                    score = score - (piece.getValue() * 1000);
-                }
-            }*/
-
-            /*if(m.move.equals("f3f6")){
-                System.err.println("here");
-            }*/
-            /*if (!m.isSafeMove()) {
-                score = score - (m.piece.getValue() * 1000);
-            }*/
-
-            //FIN HACK
-
-
-            if (currentPlayer.equals(Color.black)) {
-                score = -score;
-            }
-            if (Constant.DEBUG_EVAL) {
-                System.err.println(currentPlayer + " " + m.move + " " + score);
-            }
             totEvaluation++;
-            nodes.add(new Node(m, score, newBoard, color));
+            nodes.add(new Node(m, newBoard, color));
 
         }
         System.err.println("perform all moves on " + Chrono.elapsedTime());
@@ -77,9 +40,6 @@ public class Evaluation {
             if (isPanic()) {
                 System.err.println("panic on Evaluation deeper" + Chrono.elapsedTime() + " tot eval = " + totEvaluation);
                 return;
-            }
-            if(node.move.move.equals("d3d6")){
-                System.err.println("here");
             }
             deep(deep, node, color);
         }
@@ -96,9 +56,6 @@ public class Evaluation {
         }
 
         Color otherColor = color.equals(Color.white) ? Color.black : Color.white;
-        if (Constant.DEBUG_EVAL) {
-            System.err.println(otherColor + " play after " + node.move.move);
-        }
         List<Node> nodes = new ArrayList<>();
         for (Move m : node.board.getMoves(otherColor)) {
             if (isPanic()) {
@@ -112,15 +69,9 @@ public class Evaluation {
                     System.err.println("panic after generate board on deep : " + Chrono.elapsedTime() + " tot eval = " + totEvaluation);
                     return;
                 }
-                int score = newBoard.getScore();
-                if (this.color == Color.black) {
-                    score = -score;
-                }
-                if (Constant.DEBUG_EVAL) {
-                    System.err.println(otherColor + " " + m.move + " " + score);
-                }
                 totEvaluation++;
-                nodes.add(new Node(m, score, newBoard, otherColor));
+                Node n = new Node(m, newBoard, otherColor);
+                nodes.add(n);
             }
 
         }
@@ -149,8 +100,13 @@ public class Evaluation {
         if (nodes.isEmpty()) {
             return null;
         }
-        Node parent = new Node(null, 0, null, null);
+        Node parent = new Node(null, null, null);
         parent.setChilds(this.nodes);
+        if (Constant.DEBUG_EVAL) {
+            System.err.println("tree before minmax");
+
+            debugNode(parent,0);
+        }
         Node best = null;
         for (Node n : this.nodes) {
             if (Chrono.elapsedTime() > Chrono.MAX_TIME_GETBEST) {
@@ -160,19 +116,46 @@ public class Evaluation {
                 }
                 return best;
             }
-            Node node = MinMax.miniMax(n, Constant.DEEPER + 1, false);
+            boolean maximizingPlayer = n.colorEvaluated == Game.currentPlayer;
+
+            Node node = MinMax.miniMax(n, Constant.DEEPER + 1, maximizingPlayer);
+
             if (best == null
-                    || node.score > best.score
-                //|| (node.score == best.score && n.move.isTakePiece)
+                    || node.getScore() > best.getScore()
+                    || (node.getScore() == best.getScore() && n.move.isTakePiece)
                 //|| (node.score == best.score && n.move.isCheck)
                 //|| (node.score == best.score && n.move.piece instanceof Pawn)
                 //|| (node.score == best.score && Game.LAST_PIECE != null && (!Game.LAST_PIECE.getClass().equals(node.move.piece.getClass())))
             ) {
                 best = n;
-                best.score = node.score;
+                best.setScore(node.getScore());
             }
 
         }
+        if (Constant.DEBUG_EVAL) {
+            System.err.println("final tree");
+            debugNode(parent,0);
+        }
+
         return best;
+    }
+
+    private void debugNode(Node n,int deep) {
+        if (n.move != null) {
+            String level = "";
+            if(deep==1){
+                level="|";
+            }else{
+                level=" ";
+            }
+            for (int i = 0; i < deep; i++) {
+                level += "_";
+            }
+            System.err.println(level+" ("+n.colorEvaluated+" "+(deep)+") "+n.move.move + " : " + n.getScore());
+        }
+        for (Node node : n.getChilds()) {
+            debugNode(node,deep+1);
+        }
+
     }
 }

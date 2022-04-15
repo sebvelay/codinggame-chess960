@@ -8,7 +8,7 @@ import java.util.List;
 
 public class CheckScore {
     public static int evaluate(Board board, Color color) {
-        /*if (board.isDoACheck(color)) {
+        if (board.isDoACheck(color)) {
 
             //on regarde si on a un checkmate
             Color opponent = color.equals(Color.white) ? Color.black : Color.white;
@@ -21,7 +21,7 @@ public class CheckScore {
 
 
             return 100;
-        }*/
+        }
         return 0;
     }
 }

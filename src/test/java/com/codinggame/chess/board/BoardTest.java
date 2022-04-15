@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -60,7 +61,7 @@ class BoardTest {
         Piece whitePawn = board.getPiece(Square.of("c4"));
         Piece blackPawn = board.getPiece(Square.of("d5"));
 
-        Move move = new Move(true, whitePawn, Square.of("d5"), blackPawn, false);
+        Move move = new Move(true, whitePawn, Square.of("c4"), Square.of("d5"), blackPawn, false);
 
         Board newBoard = board.move(move);
 
@@ -114,7 +115,9 @@ class BoardTest {
 
         int score = board.getScore();
 
-        assertEquals(9021, score);
+        Queen q = new Queen(Color.white);
+
+        assertTrue(score>=q.getValue());
 
     }
 
@@ -183,13 +186,35 @@ class BoardTest {
     }
 
     @Test
-    void shouldReturnPieceOnBoard(){
+    void shouldReturnPieceOnBoard() {
         Board board = new Board("R7/8/8/3b4/8/8/8/8");
         Piece a8 = board.getPiece(Square.of("a8"));
         Piece b = board.getPiece(Square.of("d5"));
 
         assertTrue(a8 instanceof Rook);
         assertTrue(b instanceof Bishop);
+    }
+
+    @Test
+    void kingCouldTakeQueen() {
+        Board board = new Board("nrkQ4/p1pp1b2/4pP2/4P3/8/8/qNB2P1P/NRK1B2R");
+        List<Move> moveList = board.getMoves(Color.black);
+        List<String> moves = moveList
+                .stream()
+                .filter(m -> m.isTakePiece)
+                .map(m -> m.move)
+                .collect(Collectors.toList());
+
+        assertTrue(moves.contains("c8d8"));
+
+    }
+
+    @Test
+    void getControlledSquareByQueen(){
+        Board board = new Board("nrkQ4/p1pp1b2/4pP2/4P3/8/8/qNB2P1P/NRK1B2R");
+        List<Square> controlledSquare = board.getPiece(Square.of("d8")).getControlledSquare(board, Square.of("d8"));
+        assertEquals(9,controlledSquare.size());
+        assertFalse(controlledSquare.contains(Square.of("d8")));
     }
 
 }

@@ -9,17 +9,41 @@ import java.util.List;
 
 public class Node {
     public final Move move;
-    public int score;
+    private int score;
     public List<Node> childs;
     public final Board board;
     public final Color colorEvaluated;
+    public boolean isEvaluated=false;
 
-    Node(final Move move, int score, Board board, Color color) {
+    Node(final Move move, Board board, Color color) {
         this.move = move;
-        this.score = score;
         this.board = board;
         this.colorEvaluated = color;
         this.childs = new ArrayList<>();
+    }
+
+    Node(int score){
+        this.score=score;
+        this.board=null;
+        this.colorEvaluated=null;
+        this.move=null;
+        isEvaluated=true;
+    }
+
+    private void calculateScore(){
+        if(isEvaluated) return;
+        int score=board.getScore();
+        this.score=score;
+        isEvaluated=true;
+    }
+
+    public int getScore(){
+        calculateScore();
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score= score;
     }
 
     public void setChilds(List<Node> nodes) {

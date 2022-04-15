@@ -8,8 +8,8 @@ import java.util.List;
 
 public class Bishop extends Piece {
 
-    public Bishop(final Square square, Color color) {
-        super(square, color);
+    public Bishop(Color color) {
+        super(color);
         if (color.equals(Color.black)) {
             this.notation = "b";
         } else {
@@ -18,18 +18,13 @@ public class Bishop extends Piece {
     }
 
     @Override
-    public Piece clonePiece() {
-        return new Bishop(this.square, this.color);
+    public List<Square> getControlledSquare(Board board, Square from) {
+        return getSquareInDiagognale(board, from);
     }
 
     @Override
-    public List<Square> getControlledSquare(Board board) {
-        return getSquareInDiagognale(board);
-    }
-
-    @Override
-    public List<Move> legalsMove(Board board) {
-        return getMovesInDiagognale(board);
+    public List<Move> legalsMove(Board board, Square from) {
+        return getMovesInDiagognale(board, from);
 
 
     }

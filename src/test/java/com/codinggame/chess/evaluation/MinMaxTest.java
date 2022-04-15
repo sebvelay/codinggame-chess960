@@ -1,38 +1,38 @@
 package com.codinggame.chess.evaluation;
 
 import com.codinggame.chess.board.pieces.Color;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 class MinMaxTest {
 
     @Test
     void shouldTakeMaxOn1Node() {
         List<Node> nodes = new ArrayList<>();
-        Node node1 = new Node(null, 3, null, Color.white);
+        Node node1 = new Node(3);
         nodes.add(node1);
-        Node node2 = new Node(null, 2, null, Color.white);
+        Node node2 = new Node(2);
         nodes.add(node2);
 
-        Node n = new Node(null,0,null,null);
+        Node n = new Node(0);
         n.setChilds(nodes);
 
-        Node max = MinMax.miniMax(n,1,true);
+        Node max = MinMax.miniMax(n, 1, true);
 
         Assertions.assertEquals(node1, max);
     }
+
     @Test
-    void shouldEvaluateWithMin(){
+    void shouldEvaluateWithMin() {
         //1
         List<Node> nodes = new ArrayList<>();
-        Node node1 = new Node(null,3,null,Color.white);
+        Node node1 = new Node(3);
         //1..
-        Node node1a = new Node(null,4,null,Color.black);
-        Node node1b = new Node(null,5,null,Color.black);
+        Node node1a = new Node(-4);
+        Node node1b = new Node(-5);
         List<Node> childs1 = new ArrayList<>();
         childs1.add(node1a);
         childs1.add(node1b);
@@ -40,11 +40,11 @@ class MinMaxTest {
 
         nodes.add(node1);
         //2
-        Node node2 = new Node(null,2,null,Color.white);
+        Node node2 = new Node(2);
         nodes.add(node2);
         //2..
-        Node node2a = new Node(null,1,null,Color.black);
-        Node node2b = new Node(null,6,null,Color.black);
+        Node node2a = new Node(-1);
+        Node node2b = new Node(-6);
         List<Node> childs2 = new ArrayList<>();
         childs1.add(node2a);
         childs1.add(node2b);
@@ -52,10 +52,10 @@ class MinMaxTest {
 
         nodes.add(node2);
 
-        Node n = new Node(null,0,null,null);
+        Node n = new Node(0);
         n.setChilds(nodes);
 
-        Node max = MinMax.miniMax(n,3,true);
+        Node max = MinMax.miniMax(n, 3, true);
 
         Assertions.assertEquals(node2, max);
     }

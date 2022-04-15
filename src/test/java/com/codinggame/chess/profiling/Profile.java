@@ -17,6 +17,8 @@ public class Profile {
             Evaluation evaluation = new Evaluation(board, Color.white,Color.white, Constant.DEEPER);
             Node best = evaluation.getBest();
             System.out.println(best.move.move);
+
+
         }
 
     }

@@ -23,7 +23,7 @@ class LegalMoveTest {
             board = new Board("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR");
             Piece piece = board.getPiece(Square.of(1, 0));
 
-            List<Square> moves = piece.legalsMove(board).stream().map(m -> m.target).collect(Collectors.toList());
+            List<Square> moves = piece.legalsMove(board,Square.of(1, 0)).stream().map(m -> m.target).collect(Collectors.toList());
 
             List<Square> expectedLegal = Arrays.asList(Square.of(2, 0), Square.of(3, 0));
             Assertions.assertTrue(moves.containsAll(expectedLegal));
@@ -34,7 +34,7 @@ class LegalMoveTest {
             board = new Board("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR");
             Piece piece = board.getPiece(Square.of(6, 0));
 
-            List<Square> moves = piece.legalsMove(board).stream().map(m -> m.target).collect(Collectors.toList());
+            List<Square> moves = piece.legalsMove(board,Square.of(6, 0)).stream().map(m -> m.target).collect(Collectors.toList());
 
             List<Square> expectedLegal = Arrays.asList(Square.of(5, 0), Square.of(4, 0));
             Assertions.assertTrue(moves.containsAll(expectedLegal));
@@ -45,7 +45,7 @@ class LegalMoveTest {
             board = new Board("rnbqkbnr/ppp1pppp/8/8/3p4/8/PPPPPPPP/RNBQKBNR");
             Piece piece = board.getPiece(Square.of(6, 3));
 
-            List<Square> moves = piece.legalsMove(board).stream().map(m -> m.target).collect(Collectors.toList());
+            List<Square> moves = piece.legalsMove(board,Square.of(6, 3)).stream().map(m -> m.target).collect(Collectors.toList());
 
             List<Square> expectedLegal = Arrays.asList(Square.of(5, 3));
             Assertions.assertTrue(moves.containsAll(expectedLegal));
@@ -57,7 +57,7 @@ class LegalMoveTest {
             board = new Board("rnbqkbnr/ppp1pppp/8/8/8/3p4/PPPPPPPP/RNBQKBNR");
             Piece piece = board.getPiece(Square.of(6, 3));
 
-            List<Square> moves = piece.legalsMove(board).stream().map(m -> m.target).collect(Collectors.toList());
+            List<Square> moves = piece.legalsMove(board,Square.of(6, 3)).stream().map(m -> m.target).collect(Collectors.toList());
 
             Assertions.assertEquals(0, moves.size());
         }
@@ -67,7 +67,7 @@ class LegalMoveTest {
             board = new Board("rnbqkbnr/pppppppp/8/3P4/8/8/PPP1PPPP/RNBQKBNR");
             Piece piece = board.getPiece(Square.of(1, 3));
 
-            List<Square> moves = piece.legalsMove(board).stream().map(m -> m.target).collect(Collectors.toList());
+            List<Square> moves = piece.legalsMove(board,Square.of(1, 3)).stream().map(m -> m.target).collect(Collectors.toList());
 
             List<Square> expectedLegal = Arrays.asList(Square.of(2, 3));
             Assertions.assertTrue(moves.containsAll(expectedLegal));
@@ -79,7 +79,7 @@ class LegalMoveTest {
             board = new Board("rnbqkbnr/pppppppp/3P4/8/8/8/PPP1PPPP/RNBQKBNR");
             Piece piece = board.getPiece(Square.of(1, 3));
 
-            List<Square> moves = piece.legalsMove(board).stream().map(m -> m.target).collect(Collectors.toList());
+            List<Square> moves = piece.legalsMove(board,Square.of(1, 3)).stream().map(m -> m.target).collect(Collectors.toList());
 
             Assertions.assertEquals(0, moves.size());
         }
@@ -90,7 +90,7 @@ class LegalMoveTest {
 
             Piece piece = board.getPiece(Square.of("c4"));
 
-            List<String> moves = piece.legalsMove(board).stream().map(m->m.move).collect(Collectors.toList());
+            List<String> moves = piece.legalsMove(board,Square.of("c4")).stream().map(m->m.move).collect(Collectors.toList());
 
             List<String> expectedLegal = Arrays.asList("c4d5","c4c5");
             Assertions.assertTrue(moves.containsAll(expectedLegal));
@@ -102,7 +102,7 @@ class LegalMoveTest {
 
             Piece piece = board.getPiece(Square.of("c5"));
 
-            List<String> moves = piece.legalsMove(board).stream().map(m->m.move).collect(Collectors.toList());
+            List<String> moves = piece.legalsMove(board,Square.of("c5")).stream().map(m->m.move).collect(Collectors.toList());
 
             List<String> expectedLegal = Arrays.asList("c5b6","c5c6");
             Assertions.assertTrue(moves.containsAll(expectedLegal));
@@ -113,7 +113,7 @@ class LegalMoveTest {
             board = new Board("8/8/p7/P7/8/8/8/8");
             Piece piece = board.getPiece(Square.of(3, 0));
 
-            List<Move> moves = piece.legalsMove(board);
+            List<Move> moves = piece.legalsMove(board,Square.of(3, 0));
 
             Assertions.assertEquals(0, moves.size());
         }
@@ -123,7 +123,7 @@ class LegalMoveTest {
             board = new Board("8/8/7p/7P/8/8/8/8");
             Piece piece = board.getPiece(Square.of(3, 7));
 
-            List<Move> moves = piece.legalsMove(board);
+            List<Move> moves = piece.legalsMove(board,Square.of(3, 7));
 
             Assertions.assertEquals(0, moves.size());
         }
